@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="西藏行程">
+<meta name="theme-color" content="#2D6B4F">
+<link rel="manifest" href="manifest.json">
+<title>西藏自治區九日遊</title>
+<style>
+:root{--g:#2D6B4F;--gl:#E5F4EC;--bg:#F2F2F7;--card:#fff;--t:#1C1C1E;--t2:#3C3C43;--t3:#8E8E93;--sep:#E5E5EA;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg);font-family:-apple-system,'PingFang HK','Heiti TC',sans-serif;padding-bottom:calc(40px + env(safe-area-inset-bottom));-webkit-font-smoothing:antialiased;}
+
+/* COVER */
+.cover{height:280px;background:linear-gradient(170deg,#0A1628 0%,#152E25 50%,#2D6B4F 100%);position:relative;overflow:hidden;padding-top:env(safe-area-inset-top);}
+.stars{position:absolute;inset:0;pointer-events:none;}
+.star{position:absolute;background:#fff;border-radius:50%;}
+.cover-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,22,40,.05),rgba(10,22,40,.8));}
+.cover-content{position:absolute;bottom:0;left:0;right:0;padding:16px 20px 24px;}
+.trip-tag{font-size:11px;font-weight:600;color:rgba(255,255,255,.5);margin-bottom:5px;letter-spacing:.06em;text-transform:uppercase;}
+.trip-name{font-size:32px;font-weight:700;color:#fff;line-height:1.15;margin-bottom:6px;}
+.trip-date{font-size:13px;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:5px;}
+.chips{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;}
+.chip{background:rgba(255,255,255,.14);border:0.5px solid rgba(255,255,255,.25);border-radius:99px;padding:3px 11px;font-size:11px;color:rgba(255,255,255,.9);font-weight:500;}
+.offline-badge{position:absolute;top:calc(env(safe-area-inset-top) + 8px);right:14px;background:rgba(45,107,79,.3);border:0.5px solid rgba(45,107,79,.5);border-radius:99px;padding:3px 10px;font-size:10px;color:#7DCFAF;font-weight:600;}
+
+/* STATS GRID */
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--sep);}
+.stat-box{background:var(--card);padding:14px 16px;}
+.stat-n{font-size:22px;font-weight:700;color:var(--t);line-height:1;}
+.stat-l{font-size:10px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-top:2px;}
+.stat-d{font-size:11px;color:var(--t2);margin-top:4px;line-height:1.4;}
+
+/* ALTITUDE BAR */
+.alt-section{background:var(--card);padding:16px;border-top:1px solid var(--sep);}
+.alt-title{font-size:13px;font-weight:700;color:var(--t);margin-bottom:12px;}
+.alt-bars{display:flex;align-items:flex-end;gap:4px;height:70px;position:relative;}
+.alt-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;cursor:pointer;}
+.alt-bar{width:100%;border-radius:4px 4px 0 0;transition:all .25s;min-height:4px;}
+.alt-bar.active-bar{outline:2px solid var(--g);outline-offset:2px;}
+.alt-lbl{font-size:9px;font-weight:700;text-align:center;margin-top:4px;line-height:1;}
+
+/* SEC TITLE */
+.sec-title{font-size:20px;font-weight:700;color:var(--t);padding:18px 16px 10px;}
+
+/* DAY PILLS */
+.day-scroll{display:flex;gap:8px;overflow-x:auto;padding:0 16px 12px;scrollbar-width:none;}
+.day-scroll::-webkit-scrollbar{display:none;}
+.day-pill{min-width:64px;padding:9px 5px;border-radius:14px;text-align:center;cursor:pointer;flex-shrink:0;border:none;background:var(--card);transition:transform .12s;}
+.day-pill:active{transform:scale(0.93);}
+.day-pill.active{background:var(--g);}
+.dp-n{font-size:13px;font-weight:700;color:var(--t);}
+.day-pill.active .dp-n{color:#fff;}
+.dp-d{font-size:9px;font-weight:500;color:var(--t3);margin-top:2px;}
+.day-pill.active .dp-d{color:rgba(255,255,255,.7);}
+.dp-dot{width:4px;height:4px;border-radius:50%;background:var(--sep);margin:3px auto 0;}
+.day-pill.active .dp-dot{background:rgba(255,255,255,.5);}
+
+/* DAY HEADER */
+.day-hdr{margin:0 16px 10px;background:var(--card);border-radius:16px;padding:13px 14px;}
+.day-hdr-top{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.day-badge{font-size:12px;font-weight:700;padding:3px 11px;border-radius:99px;color:#fff;}
+.day-date-t{font-size:12px;color:var(--t3);font-weight:500;}
+.day-alt-t{margin-left:auto;font-size:11px;font-weight:600;color:var(--g);background:var(--gl);padding:2px 8px;border-radius:99px;}
+.day-route-t{font-size:12px;color:var(--t2);line-height:1.55;}
+.meals{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px;}
+.meal-tag{font-size:10px;padding:2px 8px;border-radius:99px;background:var(--bg);color:var(--t2);font-weight:500;}
+
+/* MAP BTN */
+.map-btn-row{padding:8px 16px 10px;display:flex;gap:8px;}
+.map-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;background:var(--g);color:#fff;border:none;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;}
+.map-btn:active{background:#0F6E56;}
+.map-btn svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+
+/* STOP LIST */
+.stop-list{background:var(--card);border-radius:16px;margin:0 16px;overflow:hidden;}
+.stop-row{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-bottom:0.5px solid var(--bg);}
+.stop-row:last-child{border-bottom:none;}
+.stop-col{display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
+.stop-ico{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.stop-ico svg{width:18px;height:18px;stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+.stop-line{width:2px;background:var(--bg);flex:1;min-height:10px;margin:3px 0;}
+.stop-body{flex:1;min-width:0;padding-top:2px;}
+.stop-name-row{display:flex;align-items:center;gap:5px;}
+.stop-name{font-size:15px;font-weight:600;color:var(--t);text-decoration:none;border-bottom:1px solid rgba(0,0,0,.08);line-height:1.3;}
+.stop-name:active{color:var(--g);}
+.pin-ico svg{width:12px;height:12px;stroke:var(--g);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
+.stop-note{font-size:12px;color:var(--t3);margin-top:2px;line-height:1.4;}
+.exp-btn{display:inline-flex;align-items:center;gap:3px;margin-top:5px;font-size:11px;font-weight:600;color:var(--g);background:none;border:none;padding:0;cursor:pointer;}
+.exp-btn svg{width:12px;height:12px;stroke:var(--g);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s;}
+.exp-btn.open svg{transform:rotate(180deg);}
+.desc-box{font-size:12px;color:var(--t2);line-height:1.65;margin-top:6px;padding:9px 11px;background:var(--bg);border-radius:10px;display:none;}
+.desc-box.open{display:block;}
+.stop-time{font-size:12px;font-weight:600;color:var(--t3);white-space:nowrap;padding-top:3px;flex-shrink:0;min-width:42px;text-align:right;}
+.ico-transport{background:#EDF3FC;} .ico-transport svg{stroke:#2970B8;}
+.ico-attraction{background:#E5F4EC;} .ico-attraction svg{stroke:#2D6B4F;}
+.ico-food{background:#FEF5E5;} .ico-food svg{stroke:#A06010;}
+.ico-hotel{background:#FBE9F0;} .ico-hotel svg{stroke:#9A2E55;}
+.ico-group{background:#F0EAFD;} .ico-group svg{stroke:#5B3DB0;}
+.ico-mountain{background:#EAF3DE;} .ico-mountain svg{stroke:#3B6D11;}
+
+/* HOTEL CARD */
+.hotel-wrap{margin:12px 16px 0;}
+.hotel-label-row{font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;padding:0 2px 6px;}
+.hotel-card{background:var(--card);border-radius:16px;overflow:hidden;}
+.hotel-top{padding:13px 14px;border-bottom:0.5px solid var(--bg);}
+.hotel-name{font-size:15px;font-weight:700;color:var(--t);margin-bottom:2px;}
+.hotel-sub{font-size:11px;color:var(--t3);}
+.hotel-body{padding:12px 14px;}
+.score-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.score-num{font-size:28px;font-weight:700;color:var(--g);line-height:1;}
+.score-meta .score-lbl{font-size:13px;font-weight:600;color:var(--t);}
+.score-meta .score-cnt{font-size:11px;color:var(--t3);}
+.hotel-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;}
+.hotel-tag{font-size:11px;padding:3px 9px;border-radius:99px;background:var(--gl);color:var(--g);font-weight:600;}
+.hotel-rows{display:flex;flex-direction:column;gap:7px;margin-bottom:10px;}
+.hotel-row{display:flex;align-items:flex-start;gap:7px;font-size:13px;color:var(--t2);line-height:1.4;}
+.hotel-row svg{flex-shrink:0;margin-top:1px;stroke:var(--t3);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.hotel-desc{font-size:12px;color:var(--t3);line-height:1.65;padding:9px 11px;background:var(--bg);border-radius:10px;margin-bottom:12px;}
+.hotel-btn{display:block;text-align:center;padding:11px;background:var(--g);border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:600;text-decoration:none;cursor:pointer;}
+.hotel-btn:active{background:#0F6E56;}
+.hotel-note{padding:12px 14px;text-align:center;font-size:13px;color:var(--t3);}
+
+/* MAP SHEET */
+.sheet-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:900;}
+.sheet-bg.show{display:block;}
+.sheet{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-radius:20px 20px 0 0;z-index:901;padding:0 0 calc(24px + env(safe-area-inset-bottom));max-height:85vh;overflow-y:auto;transform:translateY(100%);transition:transform .3s cubic-bezier(.32,.72,0,1);}
+.sheet.show{transform:translateY(0);}
+.sheet-handle{width:36px;height:4px;background:var(--sep);border-radius:2px;margin:12px auto 0;}
+.sheet-title{font-size:17px;font-weight:700;color:var(--t);padding:14px 16px 6px;}
+.sheet-sub{font-size:12px;color:var(--t3);padding:0 16px 12px;}
+.stop-chips{display:flex;flex-direction:column;gap:8px;padding:0 16px;}
+.stop-chip{display:flex;align-items:center;gap:10px;padding:11px 13px;background:var(--bg);border-radius:12px;text-decoration:none;}
+.stop-chip-num{width:22px;height:22px;border-radius:99px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0;}
+.stop-chip-name{font-size:14px;font-weight:600;color:var(--t);flex:1;}
+.stop-chip-time{font-size:12px;color:var(--t3);}
+.sheet-map-btn{margin:12px 16px 0;display:block;text-align:center;padding:12px;background:var(--g);border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;}
+.sheet-map-btn:active{background:#0F6E56;}
+
+/* TIPS */
+.tips{padding:0 16px 36px;display:flex;flex-direction:column;gap:9px;}
+.tip-card{background:var(--card);border-radius:16px;padding:14px;}
+.tip-hdr{display:flex;align-items:center;gap:10px;margin-bottom:7px;}
+.tip-ico{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.tip-ico svg{width:18px;height:18px;stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+.tip-title{font-size:15px;font-weight:700;color:var(--t);}
+.tip-body{font-size:13px;color:var(--t2);line-height:1.7;}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="stars" id="stars"></div>
+  <div class="cover-overlay"></div>
+  <span class="offline-badge">📱 可離線使用</span>
+  <div class="cover-content">
+    <div class="trip-tag">九日旅程 · 星際探索旅行 · 四人團</div>
+    <div class="trip-name">西藏自治區<br>九日遊</div>
+    <div class="trip-date">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      2026年5月16日至24日
+    </div>
+    <div class="chips">
+      <div class="chip">西寧·拉薩·珠峰</div>
+      <div class="chip">深圳出發→香港返抵</div>
+      <div class="chip">最高5,200米</div>
+    </div>
+  </div>
+</div>
+
+<!-- TRIP STATS -->
+<div class="stats-grid">
+  <div class="stat-box">
+    <div class="stat-n">9</div>
+    <div class="stat-l">日數</div>
+    <div class="stat-d">2026年5月16–24日</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-n">~2,400km</div>
+    <div class="stat-l">總行程距離</div>
+    <div class="stat-d">橫跨三個省份地區</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-n">5,200m</div>
+    <div class="stat-l">最高海拔</div>
+    <div class="stat-d">珠峰大本營 EBC</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-n">25+</div>
+    <div class="stat-l">景點</div>
+    <div class="stat-d">高原湖·雪山·寺廟·草原</div>
+  </div>
+</div>
+
+<!-- ALTITUDE CHART -->
+<div class="alt-section">
+  <div class="alt-title">📊 每日海拔概覽</div>
+  <div class="alt-bars" id="altBars"></div>
+</div>
+
+<div class="sec-title">行程安排</div>
+<div class="day-scroll" id="dayScroll"></div>
+<div id="dayHeader"></div>
+<div class="map-btn-row">
+  <button class="map-btn" onclick="openSheet()">
+    <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+    查看當日地圖景點
+  </button>
+</div>
+<div class="stop-list" id="stopList"></div>
+<div id="hotelWrap"></div>
+
+<div class="sec-title" style="margin-top:6px">旅遊貼士</div>
+<div class="tips">
+  <div class="tip-card">
+    <div class="tip-hdr"><div class="tip-ico" style="background:#FEE9E9"><svg viewBox="0 0 24 24" stroke="#C0392B"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><div class="tip-title">高原反應</div></div>
+    <div class="tip-body">珠峰大本營海拔5,200米！第四日去到咁高，唔好逞強。每日飲3至4公升水，頭兩日唔好飲酒。出發前問醫生有冇需要帶高原反應藥（Diamox）。酒店提供彌散式供氧，有需要可使用。</div>
+  </div>
+  <div class="tip-card">
+    <div class="tip-hdr"><div class="tip-ico" style="background:#FEF5E5"><svg viewBox="0 0 24 24" stroke="#A06010"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg></div><div class="tip-title">必食美食</div></div>
+    <div class="tip-body">氂牛餃子（Momo）、藏式湯麵（Thukpa）、青稞糌粑、甜酥油茶、氂牛乳酪配提子乾。跟團期間午晚餐每位50元人民幣。第一日喺西寧下南尖街試手撕羊肉麵！</div>
+  </div>
+  <div class="tip-card">
+    <div class="tip-hdr"><div class="tip-ico" style="background:#E5F4EC"><svg viewBox="0 0 24 24" stroke="#2D6B4F"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect x="6" y="10" width="12" height="10" rx="2"/></svg></div><div class="tip-title">必帶物品</div></div>
+    <div class="tip-body">SPF 50+防曬霜（高原紫外線超強）、防UV太陽眼鏡、厚薄層疊衫（五月都係凍）、潤唇膏、便攜式氧氣罐、所有藥物帶齊。去珠峰一定要帶邊境防衛證。</div>
+  </div>
+  <div class="tip-card">
+    <div class="tip-hdr"><div class="tip-ico" style="background:#EDF3FC"><svg viewBox="0 0 24 24" stroke="#2970B8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div><div class="tip-title">入境証件</div></div>
+    <div class="tip-body">西藏旅遊許可證（TTP）係必須嘅，要提前10至15個工作天申請。去珠峰仲要辦邊境防衛證（行程第四日辦）。必須參加持牌旅行團，唔可以獨立旅行。</div>
+  </div>
+</div>
+
+<!-- MAP SHEET -->
+<div class="sheet-bg" id="sheetBg" onclick="closeSheet()"></div>
+<div class="sheet" id="sheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-title" id="sheetTitle"></div>
+  <div class="sheet-sub" id="sheetSub"></div>
+  <div class="stop-chips" id="sheetStops"></div>
+  <a class="sheet-map-btn" id="sheetMapBtn" target="_blank" rel="noopener">🗺 在 Google Maps 開啟所有景點</a>
+</div>
+
+<script>
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
+
+const gmap = q => 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q);
+const CHEVRON = '<polyline points="6 9 12 15 18 9"/>';
+const PIN = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`;
+
+const SVGS={
+  plane_dep:'<path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/>',
+  plane_arr:'<path d="M17.8 19.2L16 11l3.5-3.5C21 6 21 4 20 3c-1-1-3-1-4.5.5L12 7 3.8 5.2a1 1 0 0 0-1 .5L2 7c-.2.4 0 .8.3 1L8 11l-2 3H3l-1 1 3 2 2 3 1-1v-3l3-2 3.7 5.7c.3.3.7.5 1 .3l1.3-.8a1 1 0 0 0 .5-1z"/>',
+  train:'<rect x="4" y="3" width="16" height="16" rx="2"/><path d="M9 3v16m6-16v16M4 11h16M7 19l-2 2m12-2 2 2"/>',
+  food:'<path d="M3 2v7c0 1.7 1.3 3 3 3s3-1.3 3-3V2"/><path d="M12 2v20m5-20a5 5 0 0 1 0 10V2"/>',
+  mosque:'<path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/><path d="M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>',
+  bank:'<path d="M3 21h18M3 10h18M3 7l9-4 9 4M4 10v11m16-11v11M8 10v11m8-11v11"/>',
+  cart:'<circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/>',
+  bed:'<path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/>',
+  users:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  mountain:'<path d="M3 20L10 4l4 8 3-4 4 12H3z"/>',
+  lake:'<path d="M2 12c2-4 6-4 8 0s6 4 8 0"/><path d="M2 17c2-4 6-4 8 0s6 4 8 0"/><path d="M2 7c2-4 6-4 8 0s6 4 8 0"/>',
+  snow:'<line x1="12" y1="2" x2="12" y2="22"/><path d="M17 7l-5 5-5-5"/><path d="M17 17l-5-5-5 5"/><line x1="2" y1="12" x2="22" y2="12"/>',
+  flag:'<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/>',
+  wind:'<path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/>',
+  road:'<path d="M4 20h16M4 4h16"/><path d="M12 4v16M8 8v1m8-1v1M8 15v1m8-1v1"/>',
+  car:'<rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>',
+  castle:'<path d="M22 20v-9H2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2z"/><path d="M18 11V4h-4v2h-4V4H6v7"/><path d="M15 22v-4a3 3 0 0 0-6 0v4"/>',
+  temple:'<path d="M3 22V11l9-9 9 9v11"/><path d="M3 22h18"/><path d="M9 22v-7h6v7"/><path d="M12 2v4"/>',
+  plane:'<path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/>',
+  doc:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>',
+  hotspring:'<path d="M12 2a5 5 0 0 1 5 5c0 5-5 8-5 8S7 12 7 7a5 5 0 0 1 5-5z"/><path d="M5 20h14"/>',
+  plant:'<path d="M12 22V12"/><path d="M5 4C5 4 5 13 12 12c7-1 7-8 7-8"/><path d="M5 20C5 20 5 11 12 12"/>',
+};
+
+function ico(type,key){return `<div class="stop-ico ico-${type}"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6">${SVGS[key]||SVGS.flag}</svg></div>`;}
+function toggleDesc(btn){btn.classList.toggle('open');btn.nextElementSibling.classList.toggle('open');}
+
+// altitude per day (meters, rough max)
+const ALTS = [2275, 3650, 4441, 5200, 5200, 4718, 4718, 3650, 3650];
+const ALT_COLORS = ['#E05C20','#7C3AED','#0284C7','#0F6E56','#0F6E56','#854F0B','#854F0B','#0F6E56','#BE185D'];
+
+const HOTELS = {
+  yishan:{
+    name:'拉薩布達拉宮逸扉酒店',
+    sub:'Lhasa Potala Palace Yishan Hotel · 4星 · 西藏精選第6名',
+    score:'9.5',scoreLbl:'非常好',scoreCnt:'3,331則評價',
+    tags:['布達拉宮景觀','彌散式供氧','全景餐廳','位置理想','適合打卡'],
+    rows:[
+      {icon:'pin',t:'宇拓路10號，城關區，拉薩（布達拉宮步行10分鐘）'},
+      {icon:'cal',t:'入住：15:00後 · 退房：12:00前 · 24小時前台'},
+      {icon:'food',t:'早餐：自助餐 CNY99/位 · 平日07:30–10:00'},
+      {icon:'phone',t:'電話：+86-891-6560888'},
+    ],
+    desc:'坐落於布達拉宮與大昭寺之間嘅宇拓路步行街，步行即可到達兩大景點。客房配備智能設施、彌散式供氧、65吋智能電視、膠囊咖啡機。頂樓全景餐廳可俯瞰布達拉宮，早餐提供酥油茶、藏麵等藏式美食。',
+    link:'https://www.trip.com/w/SuLrhm64gU2',btnTxt:'查看 Trip.com 詳情及預訂 →',
+    map:'拉萨布达拉宫逸扉酒店',
+  },
+  shigatse:{
+    name:'日喀則住宿（多個選項）',sub:'行程安排 · 4星酒店',
+    score:null,tags:['高原供氧','4星設施'],
+    rows:[{icon:'pin',t:'日喀則市區'},{icon:'cal',t:'由旅行社安排具體酒店'}],
+    desc:'日喀則維也納國際酒店 / 坤逸星光酒店 / 藏域雅布酒店 / 如夢富氧山景酒店（4鑽），由旅行社根據實際情況安排。',
+    link:null,btnTxt:'在 Google Maps 查看位置 →',map:'日喀则 酒店',
+  },
+  everest:{
+    name:'扎西宗鄉住宿（珠峰附近）',sub:'行程安排 · 4星酒店',
+    score:null,tags:['珠峰近距離','星空觀賞','全程最高海拔'],
+    rows:[{icon:'pin',t:'扎西宗鄉，珠峰大本營附近'},{icon:'cal',t:'由旅行社安排具體酒店'}],
+    desc:'珠峰云左星光酒店（4鑽）/ 維也納國際酒店。係全程海拔最高嘅住宿地點，記得慢慢走、多休息，充分利用供氧設施。',
+    link:null,btnTxt:'在 Google Maps 查看位置 →',map:'扎西宗乡 珠峰',
+  },
+  bange:{
+    name:'班戈住宿（多個選項）',sub:'行程安排 · 星空觀賞勝地',
+    score:null,tags:['最佳觀星地點','藏北草原','高原體驗'],
+    rows:[{icon:'pin',t:'班戈縣'},{icon:'cal',t:'由旅行社安排具體酒店'}],
+    desc:'班戈星際星空酒店 / 維也納酒店 / 聯億大酒店。班戈縣光污染極少，晴天可欣賞壯麗星空，係全西藏最佳觀星地點之一。',
+    link:null,btnTxt:'在 Google Maps 查看位置 →',map:'班戈县 酒店',
+  },
+};
+const DAY_HOTEL  = [null,'yishan','shigatse','everest','shigatse','bange','yishan','yishan',null];
+const DAY_HOTEL_NOTE = ['🚄 今晚乘坐夜臥火車，車上休息','','','','','','','','✈️ 今日返港，無需住宿'];
+
+function rIcon(t){
+  if(t==='pin') return `<svg width="14" height="14" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`;
+  if(t==='cal') return `<svg width="14" height="14" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`;
+  if(t==='food') return `<svg width="14" height="14" viewBox="0 0 24 24"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>`;
+  if(t==='phone') return `<svg width="14" height="14" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.36 2 2 0 0 1 3.58 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 5.49 5.49l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16z"/></svg>`;
+  return '';
+}
+
+const DAYS=[
+  {label:'第一日',date:'5月16日',color:'#E05C20',route:'深圳 → 西寧',meals:[],stops:[
+    {type:'transport',icon:'plane_dep',name:'深圳寶安國際機場',map:'深圳宝安国际机场',note:'提早1.5至2小時到達',time:'07:00'},
+    {type:'transport',icon:'plane_arr',name:'西寧曹家堡機場',map:'西宁曹家堡国际机场',note:'抵達西寧',time:'11:00'},
+    {type:'transport',icon:'train',name:'西寧站',map:'西宁火车站',note:'放低行李 · LG1廣場',time:'12:29'},
+    {type:'food',icon:'food',name:'下南尖街',map:'下南关街 西宁',note:'午餐掃街',time:'13:15'},
+    {type:'attraction',icon:'mosque',name:'西寧東關清真寺',map:'西宁东关清真大寺',note:'',time:'14:46'},
+    {type:'attraction',icon:'mosque',name:'南關清真寺',map:'西宁南关清真寺',note:'',time:'15:49'},
+    {type:'attraction',icon:'bank',name:'青海省博物館',map:'青海省博物馆',note:'',time:'17:03'},
+    {type:'food',icon:'food',name:'老字号马相卿烤肉面食館',map:'马相卿特色烤肉面食馆 西宁',note:'晚餐',time:'19:08'},
+    {type:'attraction',icon:'cart',name:'鑫鑫超市',map:'鑫鑫超市 西宁',note:'買零食補給',time:'21:26'},
+    {type:'transport',icon:'train',name:'西寧站（出發）',map:'西宁火车站',note:'搭夜車去拉薩',time:'22:15'},
+  ]},
+  {label:'第二日',date:'5月17日',color:'#7C3AED',route:'西寧 → 拉薩（海拔3,650米）',meals:[],stops:[
+    {type:'transport',icon:'train',name:'拉薩站',map:'拉萨火车站',note:'抵達拉薩',time:'21:30'},
+    {type:'hotel',icon:'bed',name:'拉薩布達拉宮逸扉酒店',map:'拉萨布达拉宫逸扉酒店',note:'宇拓路10號 · 評分9.5分 · 含彌散式供氧',time:'22:26'},
+  ]},
+  {label:'第三日',date:'5月18日',color:'#0284C7',route:'拉薩 → 雅江河谷 → 羊卓雍措 → 乃欽康桑雪山 → 滿拉水庫 → 日喀則',meals:['早（自理）','午餐50元','晚餐50元'],stops:[
+    {type:'group',icon:'users',name:'拉薩上門接送出發',map:'拉萨布达拉宫逸扉酒店',note:'跟團第一日',time:'08:00'},
+    {type:'attraction',icon:'lake',name:'雅江河谷',map:'雅鲁藏布江河谷 西藏',note:'雅魯藏布江河谷風光',time:'',desc:'世界上海拔最高嘅大河，流經西藏南部。河谷兩岸青山翠嶺，風光壯麗，沿途可見雪山倒影。'},
+    {type:'mountain',icon:'lake',name:'羊卓雍措',map:'羊卓雍措 西藏',note:'西藏三大聖湖 · 海拔4,441米',time:'',desc:'西藏三大聖湖之一，湖水呈神秘嘅天藍色，藏族人視之為「天鵝之湖」，四周雪山環繞。'},
+    {type:'mountain',icon:'snow',name:'乃欽康桑雪山冰川旅遊區',map:'乃钦康桑雪山 西藏',note:'可體驗卡丁車 / 5-12月劃船（贈送）',time:'',desc:'海拔7,191米，可近距離欣賞冰川地貌，5月至12月可體驗划船穿越冰湖，景色震撼。'},
+    {type:'attraction',icon:'lake',name:'滿拉水庫',map:'满拉水库 西藏',note:'',time:'',desc:'西藏最大嘅人工水庫，水面平靜如鏡，四周群山環抱，係前往日喀則途中的景點。'},
+  ]},
+  {label:'第四日',date:'5月19日',color:'#0F6E56',route:'日喀則 → 辦邊防證 → 嘉措拉山口 → 加烏拉山口 → 珠峰大本營 → 扎西宗鄉',meals:['早（酒店含早）','午餐50元','晚餐50元'],stops:[
+    {type:'group',icon:'doc',name:'辦理邊境防衛證',map:'日喀则边境管理大队',note:'去珠峰必須辦理',time:'早上'},
+    {type:'attraction',icon:'flag',name:'5000公里紀念廣場',map:'5000公里纪念广场 日喀则',note:'',time:'',desc:'距離北京5,000公里嘅里程碑，係前往珠峰路途上一個特別嘅打卡地標。'},
+    {type:'mountain',icon:'mountain',name:'嘉措拉山口',map:'加错拉山口 西藏',note:'',time:'',desc:'海拔5,248米，晴天可清晰眺望珠峰、洛子峰等多座8,000米以上巨峰。'},
+    {type:'mountain',icon:'mountain',name:'加烏拉山口',map:'加乌拉山口 珠峰',note:'珠峰遠眺觀景點',time:'',desc:'海拔5,216米，天氣好時可同時睇到珠峰等五座8,000米以上嘅巨峰，氣勢磅礴。'},
+    {type:'mountain',icon:'mountain',name:'珠峰大本營 EBC',map:'珠穆朗玛峰大本营',note:'海拔5,200米 · 世界最高峰腳下',time:'下午',desc:'全球登山者嘅夢想之地，可近距離仰望珠峰8,848米雄姿。高原空氣稀薄，行動宜緩慢，多做深呼吸。'},
+  ]},
+  {label:'第五日',date:'5月20日',color:'#0F6E56',route:'扎西宗鄉 → 珠峰東坡 → 十萬沙丘 → 阿瑪直米雪山 → G219 → 日喀則',meals:['早（酒店含早）','午餐50元','晚餐50元'],stops:[
+    {type:'mountain',icon:'mountain',name:'珠峰東坡',map:'珠峰东坡 西藏',note:'另一角度睇珠峰',time:'早上',desc:'與大本營截然不同嘅觀賞角度，晨光照射雪峰時特別震撼，係攝影愛好者嘅天堂。'},
+    {type:'attraction',icon:'wind',name:'十萬沙丘',map:'十万沙丘 西藏',note:'高原沙漠奇觀',time:'',desc:'青藏高原上罕見嘅沙漠地貌，金色沙丘與周邊雪山形成強烈對比，係西藏獨一無二嘅自然奇景。'},
+    {type:'mountain',icon:'snow',name:'阿瑪直米雪山',map:'阿玛直米雪山 西藏',note:'',time:'',desc:'藏區著名嘅神山，藏族人視之為聖山，雪山冰峰在陽光下閃閃發光。'},
+    {type:'transport',icon:'road',name:'G219國道',map:'G219国道 西藏',note:'沿途風光',time:'',desc:'中國最長最高嘅公路之一，沿途可見藏羚羊、氂牛等野生動物，係自駕愛好者心目中嘅聖地。'},
+  ]},
+  {label:'第六日',date:'5月21日',color:'#854F0B',route:'日喀則 → 南木林野溫泉 → 藏北草原 → 杰崗日雪山 → 色林措 → 班戈',meals:['早（酒店含早）','午餐50元','晚餐50元'],stops:[
+    {type:'attraction',icon:'hotspring',name:'南木林野溫泉',map:'南木林野温泉 西藏',note:'高原溫泉體驗',time:'早上',desc:'天然高原溫泉，泉水富含礦物質，在高海拔地區浸泡溫泉係難得體驗。'},
+    {type:'attraction',icon:'plant',name:'藏北草原',map:'藏北草原 那曲',note:'廣闊草原風光',time:'',desc:'世界上海拔最高嘅草原之一，廣闊無垠，氂牛、藏羚羊成群漫步，展現純樸嘅遊牧文化。'},
+    {type:'mountain',icon:'snow',name:'杰崗日雪山',map:'杰岗日雪山 西藏',note:'',time:'',desc:'藏北地區著名嘅高峰，常年積雪，氣勢雄偉。山腳下嘅高原草甸與雪山相映成趣。'},
+    {type:'mountain',icon:'lake',name:'色林措',map:'色林错 西藏',note:'西藏最大湖',time:'',desc:'西藏最大嘅湖泊，面積約2,391平方公里，湖水呈深藍色，湖畔係黑頸鶴嘅重要棲息地。'},
+  ]},
+  {label:'第七日',date:'5月22日',color:'#854F0B',route:'班戈 → 巴木措 → 納木措（扎西半島）→ 那根拉山口 → 拉薩',meals:['早（酒店含早）','午餐50元'],stops:[
+    {type:'mountain',icon:'lake',name:'巴木措',map:'巴木错 西藏',note:'',time:'早上',desc:'藏北高原上一個寧靜嘅高原湖泊，湖水湛藍，相比色林措更加幽靜，遊客較少。'},
+    {type:'mountain',icon:'lake',name:'納木措 · 扎西半島南岸',map:'纳木错扎西半岛 西藏',note:'西藏三大聖湖 · 海拔4,718米',time:'',desc:'世界上海拔最高嘅鹹水湖，湖水呈現神秘嘅寶藍色，扎西半島深入湖中，藏族人稱之為「天湖」。'},
+    {type:'mountain',icon:'mountain',name:'那根拉山口',map:'那根拉山口 纳木错',note:'觀景台',time:'',desc:'海拔5,190米，係俯瞰納木措全景嘅最佳位置，整個納木措及念青唐古拉雪山盡收眼底。'},
+    {type:'transport',icon:'car',name:'返回拉薩',map:'拉萨 西藏',note:'跟團行程結束，送返酒店',time:'晚上'},
+  ]},
+  {label:'第八日',date:'5月23日',color:'#0F6E56',route:'拉薩市區自由遊覽',meals:[],stops:[
+    {type:'attraction',icon:'castle',name:'布達拉宮',map:'布达拉宫 拉萨',note:'熱門度98% · 提前預約',time:'10:00',desc:'世界上海拔最高嘅宮殿，建於海拔3,700米嘅紅山之上，共13層，內藏珍貴佛教文物。必須提前網上預約。'},
+    {type:'attraction',icon:'temple',name:'大昭寺',map:'大昭寺 拉萨',note:'八廓街附近 · 朝聖勝地',time:'14:05',desc:'西藏最神聖嘅寺廟之一，供奉釋迦牟尼佛12歲等身像。寺外八廓街係著名嘅朝聖轉經道。'},
+  ]},
+  {label:'第九日',date:'5月24日',color:'#BE185D',route:'拉薩 → 昆明 → 香港',meals:[],stops:[
+    {type:'transport',icon:'plane_dep',name:'拉薩貢嘎國際機場',map:'拉萨贡嘎国际机场',note:'出發返程',time:'10:30'},
+    {type:'transport',icon:'plane',name:'昆明長水國際機場',map:'昆明长水国际机场',note:'要拎行李重新辦理登機手續',time:'15:20'},
+    {type:'transport',icon:'plane_arr',name:'香港國際機場',map:'Hong Kong International Airport',note:'返到香港喇！',time:'20:15'},
+  ]},
+];
+
+let active = 0;
+
+// ── Altitude chart ──
+function renderAlt(){
+  const el = document.getElementById('altBars');
+  const BAR_MAX_PX = 52;
+  const max = Math.max(...ALTS);
+  el.innerHTML = ALTS.map((a,i)=>{
+    const px = Math.max(6, Math.round((a/max)*BAR_MAX_PX));
+    const isActive = i===active;
+    const op = isActive ? '1' : '0.3';
+    const lc = isActive ? ALT_COLORS[i] : 'var(--t3)';
+    return '<div class="alt-bar-wrap" onclick="switchDay(' + i + ')">'
+      + '<div class="alt-bar' + (isActive?' active-bar':'') + '" style="height:' + px + 'px;background:' + ALT_COLORS[i] + ';opacity:' + op + ';"></div>'
+      + '<div class="alt-lbl" style="color:' + lc + ';">' + (i+1) + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+// ── Day pills ──
+function renderDays(){
+  const s = document.getElementById('dayScroll');
+  s.innerHTML = '';
+  DAYS.forEach((d,i)=>{
+    const p = document.createElement('div');
+    p.className = 'day-pill'+(i===active?' active':'');
+    if(i===active) p.style.background = d.color;
+    p.innerHTML = `<div class="dp-n">第${i+1}日</div><div class="dp-d">${d.date}</div><div class="dp-dot"></div>`;
+    p.onclick = ()=> switchDay(i);
+    s.appendChild(p);
+  });
+}
+
+function switchDay(i){
+  active = i;
+  renderDays();
+  renderAlt();
+  renderHeader();
+  renderStops();
+  renderHotel();
+  document.getElementById('dayHeader').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ── Day header ──
+function renderHeader(){
+  const d = DAYS[active];
+  const m = d.meals.length ? `<div class="meals">${d.meals.map(x=>`<span class="meal-tag">🍽 ${x}</span>`).join('')}</div>` : '';
+  const alt = ALTS[active].toLocaleString();
+  document.getElementById('dayHeader').innerHTML = `
+    <div class="day-hdr">
+      <div class="day-hdr-top">
+        <div class="day-badge" style="background:${d.color}">${d.label}</div>
+        <div class="day-date-t">${d.date}</div>
+        <div class="day-alt-t">↑ ${alt}m</div>
+      </div>
+      <div class="day-route-t">${d.route}</div>
+      ${m}
+    </div>`;
+}
+
+// ── Stops ──
+function renderStops(){
+  const d = DAYS[active];
+  document.getElementById('stopList').innerHTML = d.stops.map((s,i)=>{
+    const exp = s.desc
+      ? `<button class="exp-btn" onclick="toggleDesc(this)"><svg viewBox="0 0 24 24">${CHEVRON}</svg>簡介</button><div class="desc-box">${s.desc}</div>`
+      : '';
+    return `<div class="stop-row t-${s.type}">
+      <div class="stop-col">
+        ${ico(s.type,s.icon)}
+        ${i<d.stops.length-1?'<div class="stop-line"></div>':''}
+      </div>
+      <div class="stop-body">
+        <div class="stop-name-row">
+          <a class="stop-name" href="${gmap(s.map)}" target="_blank" rel="noopener">${s.name}</a>
+          <span class="pin-ico">${PIN}</span>
+        </div>
+        ${s.note?`<div class="stop-note">${s.note}</div>`:''}
+        ${exp}
+      </div>
+      ${s.time?`<div class="stop-time">${s.time}</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+// ── Hotel card ──
+function renderHotel(){
+  const wrap = document.getElementById('hotelWrap');
+  const key = DAY_HOTEL[active];
+  const note = DAY_HOTEL_NOTE[active];
+  if(!key && note){ wrap.innerHTML=`<div class="hotel-wrap"><div class="hotel-card"><div class="hotel-note">${note}</div></div></div>`; return; }
+  if(!key){ wrap.innerHTML=''; return; }
+  const h = HOTELS[key];
+  const scoreHTML = h.score
+    ? `<div class="score-row"><div class="score-num">${h.score}</div><div class="score-meta"><div class="score-lbl">${h.scoreLbl}</div><div class="score-cnt">${h.scoreCnt}</div></div></div>`
+    : '';
+  const btnHTML = h.link
+    ? `<a href="${h.link}" target="_blank" rel="noopener" class="hotel-btn">${h.btnTxt}</a>`
+    : `<a href="${gmap(h.map)}" target="_blank" rel="noopener" class="hotel-btn">${h.btnTxt}</a>`;
+  wrap.innerHTML = `
+    <div class="hotel-wrap">
+      <div class="hotel-label-row">🏨 今晚住宿</div>
+      <div class="hotel-card">
+        <div class="hotel-top">
+          <div class="hotel-name">${h.name}</div>
+          <div class="hotel-sub">${h.sub}</div>
+        </div>
+        <div class="hotel-body">
+          ${scoreHTML}
+          <div class="hotel-tags">${h.tags.map(t=>`<span class="hotel-tag">${t}</span>`).join('')}</div>
+          <div class="hotel-rows">${h.rows.map(r=>`<div class="hotel-row">${rIcon(r.icon)}${r.t}</div>`).join('')}</div>
+          <div class="hotel-desc">${h.desc}</div>
+          ${btnHTML}
+        </div>
+      </div>
+    </div>`;
+}
+
+// ── Map sheet ──
+function openSheet(){
+  const d = DAYS[active];
+  document.getElementById('sheetTitle').textContent = `${d.label} — 景點列表`;
+  document.getElementById('sheetSub').textContent = `撳任何景點直接開啟 Google Maps`;
+  const stops = d.stops.filter(s=>s.type!=='transport');
+  document.getElementById('sheetStops').innerHTML = stops.map((s,i)=>`
+    <a class="stop-chip" href="${gmap(s.map)}" target="_blank" rel="noopener">
+      <div class="stop-chip-num" style="background:${d.color}">${i+1}</div>
+      <div class="stop-chip-name">${s.name}</div>
+      ${s.time?`<div class="stop-chip-time">${s.time}</div>`:''}
+    </a>`).join('');
+  const allQuery = stops.map(s=>s.map).join('+');
+  document.getElementById('sheetMapBtn').href = `https://www.google.com/maps/search/${encodeURIComponent(stops.map(s=>s.map).join(' '))}`;
+  document.getElementById('sheetBg').classList.add('show');
+  requestAnimationFrame(()=>document.getElementById('sheet').classList.add('show'));
+}
+function closeSheet(){
+  document.getElementById('sheet').classList.remove('show');
+  document.getElementById('sheetBg').classList.remove('show');
+}
+
+// ── Stars ──
+function makeStars(){
+  const c = document.getElementById('stars');
+  for(let i=0;i<90;i++){
+    const s = document.createElement('div');
+    s.className='star';
+    const sz = Math.random()*2.5+0.5;
+    s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*.8+.15}`;
+    c.appendChild(s);
+  }
+}
+
+makeStars();
+renderAlt();
+renderDays();
+renderHeader();
+renderStops();
+renderHotel();
+</script>
+</body>
+</html>
