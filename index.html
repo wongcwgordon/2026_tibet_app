@@ -35,13 +35,16 @@ body{background:var(--bg);font-family:-apple-system,'PingFang HK','Heiti TC',san
 .stat-d{font-size:11px;color:var(--t2);margin-top:4px;line-height:1.4;}
 
 /* ALTITUDE BAR */
-.alt-section{background:var(--card);padding:16px;border-top:1px solid var(--sep);}
-.alt-title{font-size:13px;font-weight:700;color:var(--t);margin-bottom:12px;}
-.alt-bars{display:flex;align-items:flex-end;gap:4px;height:70px;position:relative;}
-.alt-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;cursor:pointer;}
-.alt-bar{width:100%;border-radius:4px 4px 0 0;transition:all .25s;min-height:4px;}
-.alt-bar.active-bar{outline:2px solid var(--g);outline-offset:2px;}
-.alt-lbl{font-size:9px;font-weight:700;text-align:center;margin-top:4px;line-height:1;}
+.alt-section{background:var(--card);padding:0;border-top:1px solid var(--sep);overflow:hidden;}
+.alt-title{font-size:13px;font-weight:700;color:var(--t);padding:16px 16px 8px;margin:0;}
+.alt-bars-wrap{overflow-x:auto;scrollbar-width:none;scroll-behavior:smooth;padding:0 16px 12px;}
+.alt-bars-wrap::-webkit-scrollbar{display:none;}
+.alt-bars{display:flex;align-items:flex-end;gap:6px;min-width:min-content;height:80px;}
+.alt-bar-wrap{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;cursor:pointer;flex-shrink:0;height:100%;}
+.alt-bar{width:30px;border-radius:3px 3px 0 0;transition:all .25s;min-height:4px;}
+.alt-bar.active-bar{outline:2px solid var(--g);outline-offset:1px;}
+.alt-meter{font-size:9px;font-weight:700;text-align:center;line-height:1.2;white-space:nowrap;margin-top:3px;}
+.alt-day-num{font-size:9px;color:var(--t3);font-weight:600;margin-top:1px;}
 
 /* SEC TITLE */
 .sec-title{font-size:20px;font-weight:700;color:var(--t);padding:18px 16px 10px;}
@@ -198,7 +201,9 @@ body{background:var(--bg);font-family:-apple-system,'PingFang HK','Heiti TC',san
 <!-- ALTITUDE CHART -->
 <div class="alt-section">
   <div class="alt-title">📊 每日海拔概覽</div>
-  <div class="alt-bars" id="altBars"></div>
+  <div class="alt-bars-wrap" id="altBarsWrap">
+    <div class="alt-bars" id="altBars"></div>
+  </div>
 </div>
 
 <div class="sec-title">行程安排</div>
@@ -336,12 +341,12 @@ const DAYS=[
     {type:'transport',icon:'plane_dep',name:'深圳寶安國際機場',map:'深圳宝安国际机场',note:'提早1.5至2小時到達',time:'07:00'},
     {type:'transport',icon:'plane_arr',name:'西寧曹家堡機場',map:'西宁曹家堡国际机场',note:'抵達西寧',time:'11:00'},
     {type:'transport',icon:'train',name:'西寧站',map:'西宁火车站',note:'放低行李 · LG1廣場',time:'12:29'},
-    {type:'food',icon:'food',name:'下南尖街',map:'下南关街 西宁',note:'午餐掃街',time:'13:15'},
-    {type:'attraction',icon:'mosque',name:'西寧東關清真寺',map:'西宁东关清真大寺',note:'',time:'14:46'},
-    {type:'attraction',icon:'mosque',name:'南關清真寺',map:'西宁南关清真寺',note:'',time:'15:49'},
-    {type:'attraction',icon:'bank',name:'青海省博物館',map:'青海省博物馆',note:'',time:'17:03'},
-    {type:'food',icon:'food',name:'老字号马相卿烤肉面食館',map:'马相卿特色烤肉面食馆 西宁',note:'晚餐',time:'19:08'},
-    {type:'attraction',icon:'cart',name:'鑫鑫超市',map:'鑫鑫超市 西宁',note:'買零食補給',time:'21:26'},
+    {type:'food',icon:'food',name:'下南尖街',map:'下南关街 西宁',note:'午餐掃街',time:'13:15',desc:'西寧最著名嘅美食街之一，聚集大量清真小食攤檔。必試手撕羊肉麵、羊雜湯、炒砂鍋、烤串等西北特色美食。價錢實惠，本地人同遊客都係度食，係感受西寧飲食文化嘅最佳地點。'},
+    {type:'attraction',icon:'mosque',name:'西寧東關清真寺',map:'西宁东关清真大寺',note:'',time:'14:46',desc:'東關清真大寺係中國西北地區規模最大嘅清真寺之一，始建於明朝洪武年間，距今已有600多年歷史。寺內可容納萬人禮拜，融合中國傳統建築與伊斯蘭風格，金碧輝煌，係了解回族文化嘅重要場所。'},
+    {type:'attraction',icon:'mosque',name:'南關清真寺',map:'西宁南关清真寺',note:'',time:'15:49',desc:'南關清真寺係西寧另一座重要嘅清真寺，建築風格獨特，以阿拉伯圓頂式設計為主。寺廟周圍係回族聚居區，可以感受濃厚嘅伊斯蘭文化氛圍，附近有不少清真食品小店。'},
+    {type:'attraction',icon:'bank',name:'青海省博物館',map:'青海省博物馆',note:'',time:'17:03',desc:'青海省博物館係了解青海歷史文化嘅最佳地點，館內收藏大量珍貴文物，包括史前彩陶、藏族佛教文物、絲綢之路出土文物等。館藏超過47,000件展品，呈現青海從遠古至今嘅歷史發展脈絡，入場免費。'},
+    {type:'food',icon:'food',name:'老字号马相卿烤肉面食館',map:'马相卿特色烤肉面食馆 西宁',note:'晚餐',time:'19:08',desc:'西寧著名老字號清真餐廳，以烤肉同手工麵食見稱。招牌菜包括烤羊腿、手抓羊肉、牛肉拉麵、羊肉包子等。食材新鮮，用料實在，係當地人推薦嘅地道西寧風味餐廳，出發前記得叫定位。'},
+    {type:'attraction',icon:'cart',name:'鑫鑫超市',map:'鑫鑫超市 西宁',note:'買零食補給',time:'21:26',desc:'搭夜車前最後補給機會！建議購買以下物品：乾糧零食（餅乾、核桃、棗）、礦泉水（火車上需要多飲水）、即食麵、保暖毛巾。西藏物價較貴，呢度買好啲係比較划算。'},
     {type:'transport',icon:'train',name:'西寧站（出發）',map:'西宁火车站',note:'搭夜車去拉薩',time:'22:15'},
   ]},
   {label:'第二日',date:'5月17日',color:'#7C3AED',route:'西寧 → 拉薩（海拔3,650米）',meals:[],stops:[
@@ -396,18 +401,31 @@ let active = 0;
 // ── Altitude chart ──
 function renderAlt(){
   const el = document.getElementById('altBars');
-  const BAR_MAX_PX = 52;
+  const wrap = document.getElementById('altBarsWrap');
+  const BAR_MAX_PX = 50;
   const max = Math.max(...ALTS);
   el.innerHTML = ALTS.map((a,i)=>{
-    const px = Math.max(6, Math.round((a/max)*BAR_MAX_PX));
+    const px = Math.max(4, Math.round((a/max)*BAR_MAX_PX));
     const isActive = i===active;
-    const op = isActive ? '1' : '0.3';
-    const lc = isActive ? ALT_COLORS[i] : 'var(--t3)';
+    const op = isActive ? '1' : '0.28';
+    const mc = isActive ? ALT_COLORS[i] : 'var(--t3)';
     return '<div class="alt-bar-wrap" onclick="switchDay(' + i + ')">'
       + '<div class="alt-bar' + (isActive?' active-bar':'') + '" style="height:' + px + 'px;background:' + ALT_COLORS[i] + ';opacity:' + op + ';"></div>'
-      + '<div class="alt-lbl" style="color:' + lc + ';">' + (i+1) + '</div>'
+      + '<div class="alt-meter" style="color:' + mc + ';">' + ALTS[i].toLocaleString() + 'm</div>'
+      + '<div class="alt-day-num">第' + (i+1) + '日</div>'
       + '</div>';
   }).join('');
+  
+  // Auto-scroll to active day
+  setTimeout(()=>{
+    const activeBar = el.querySelector('.alt-bar-wrap:nth-child(' + (active+1) + ')');
+    if(activeBar) {
+      const barLeft = activeBar.offsetLeft;
+      const wrapWidth = wrap.clientWidth;
+      const barWidth = activeBar.clientWidth;
+      wrap.scrollLeft = Math.max(0, barLeft - (wrapWidth/2) + (barWidth/2));
+    }
+  }, 100);
 }
 
 // ── Day pills ──
@@ -431,7 +449,7 @@ function switchDay(i){
   renderHeader();
   renderStops();
   renderHotel();
-  document.getElementById('dayHeader').scrollIntoView({behavior:'smooth',block:'start'});
+
 }
 
 // ── Day header ──
