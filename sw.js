@@ -1,4 +1,4 @@
-const CACHE = 'tibet-v1';
+const CACHE = 'tibet-v2';
 const ASSETS = ['./index.html', './manifest.json'];
 
 self.addEventListener('install', e => {
