@@ -2,21 +2,21 @@
   "name": "西藏9天軍訓",
   "short_name": "🏔 西藏軍訓",
   "description": "西藏九日軍訓行程 - 珠峰大本營、拉薩、班戈",
-  "start_url": "./index.html?v=2",
+  "start_url": "./index.html?v=3",
   "display": "standalone",
-  "background_color": "#0A1628",
+  "background_color": "#FFFFFF",
   "theme_color": "#2D6B4F",
   "orientation": "portrait",
   "scope": "./",
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><defs><linearGradient id='bg' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%232D6B4F;stop-opacity:1'/><stop offset='100%' style='stop-color:%23152E25;stop-opacity:1'/></linearGradient></defs><rect fill='url(%23bg)' width='192' height='192' rx='40'/><text x='96' y='128' font-size='120' text-anchor='middle' font-family='Apple Color Emoji'>🏔️</text></svg>",
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23FFFFFF' width='192' height='192' rx='40'/><g transform='translate(96,96)'><path d='M -40 30 L 0 -50 L 40 30 Z' fill='%232D6B4F'/><path d='M -55 10 L -30 -35 L -10 10 Z' fill='%232D6B4F' opacity='0.8'/><path d='M 25 15 L 55 -25 L 65 15 Z' fill='%232D6B4F' opacity='0.9'/></g></svg>",
       "sizes": "192x192",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     },
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><defs><linearGradient id='bg2' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%232D6B4F;stop-opacity:1'/><stop offset='100%' style='stop-color:%23152E25;stop-opacity:1'/></linearGradient></defs><rect fill='url(%23bg2)' width='512' height='512' rx='100'/><text x='256' y='340' font-size='320' text-anchor='middle' font-family='Apple Color Emoji'>🏔️</text></svg>",
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%23FFFFFF' width='512' height='512' rx='100'/><g transform='translate(256,256)'><path d='M -100 80 L 0 -130 L 100 80 Z' fill='%232D6B4F'/><path d='M -140 30 L -75 -90 L -25 30 Z' fill='%232D6B4F' opacity='0.8'/><path d='M 70 40 L 140 -60 L 170 40 Z' fill='%232D6B4F' opacity='0.9'/></g></svg>",
       "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"
