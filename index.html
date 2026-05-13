@@ -737,11 +737,6 @@ function switchDayFromAlt(dayIndex) {
   renderHeader();
   renderStops();
   renderHotel();
-  // Ensure day header is visible
-  setTimeout(function() {
-    var dayHeader = document.getElementById('dayHeader');
-    if (dayHeader) dayHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 100);
 }
 
 function switchPage(page) {
