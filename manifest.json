@@ -1,7 +1,7 @@
 {
   "name": "西藏9天軍訓",
-  "short_name": "西藏軍訓",
-  "description": "西藏九日行程規劃 - 珠峰大本營、拉薩、班戈",
+  "short_name": "🏔 西藏軍訓",
+  "description": "西藏九日軍訓行程 - 珠峰大本營、拉薩、班戈",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0A1628",
@@ -19,12 +19,6 @@
       "src": "./icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><defs><linearGradient id='bg' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%232D6B4F;stop-opacity:1'/><stop offset='100%' style='stop-color:%23152E25;stop-opacity:1'/></linearGradient></defs><rect fill='url(%23bg)' width='192' height='192' rx='40'/><g transform='translate(96,96)'><path d='M -30 20 L 0 -40 L 30 20 Z' fill='%23fff' opacity='0.9'/><path d='M -40 10 L -20 -30 L 0 5 Z' fill='%23fff' opacity='0.7'/><path d='M 20 15 L 40 -20 L 50 10 Z' fill='%23fff' opacity='0.8'/></g></svg>",
-      "sizes": "192x192",
-      "type": "image/svg+xml",
       "purpose": "any maskable"
     }
   ]
