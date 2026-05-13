@@ -41,9 +41,9 @@ body{background:var(--bg);font-family:-apple-system,'PingFang HK','Heiti TC',san
 .alt-title{font-size:13px;font-weight:700;color:var(--t);padding:16px 16px 8px;margin:0;}
 .alt-bars-wrap{overflow-x:auto;scrollbar-width:none;scroll-behavior:smooth;padding:0 8px 12px;}
 .alt-bars-wrap::-webkit-scrollbar{display:none;}
-.alt-bars{display:flex;align-items:flex-end;gap:3px;min-width:100%;height:90px;padding:0 8px;}
-.alt-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;cursor:pointer;min-height:100%;min-width:0;}
-.alt-bar{width:100%;border-radius:3px 3px 0 0;transition:all .25s;min-height:4px;max-width:50px;}
+.alt-bars{display:flex;align-items:flex-end;gap:3px;min-width:100%;height:100px;padding:0 8px;box-sizing:border-box;}
+.alt-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;min-width:0;}
+.alt-bar{width:90%;border-radius:3px 3px 0 0;transition:all .25s;min-height:4px;}
 .alt-bar.active-bar{outline:2px solid var(--g);outline-offset:1px;}
 .alt-meter{font-size:8px;font-weight:700;text-align:center;line-height:1.1;white-space:nowrap;margin-top:2px;}
 .alt-day-num{font-size:8px;color:var(--t3);font-weight:600;margin-top:1px;}
@@ -52,14 +52,14 @@ body{background:var(--bg);font-family:-apple-system,'PingFang HK','Heiti TC',san
 .sec-title{font-size:20px;font-weight:700;color:var(--t);padding:18px 16px 10px;}
 
 /* DAY PILLS */
-.day-scroll{display:flex;gap:8px;overflow-x:auto;padding:0 16px 12px;scrollbar-width:none;}
+.day-scroll{display:flex;gap:8px;overflow-x:auto;padding:0 16px 16px;scrollbar-width:none;margin-bottom:12px;border-bottom:1px solid var(--sep);}
 .day-scroll::-webkit-scrollbar{display:none;}
-.day-pill{min-width:64px;padding:9px 5px;border-radius:14px;text-align:center;cursor:pointer;flex-shrink:0;border:none;background:var(--card);transition:transform .12s;}
+.day-pill{min-width:56px;padding:6px 4px;border-radius:12px;text-align:center;cursor:pointer;flex-shrink:0;border:none;background:var(--card);transition:transform .12s;}
 .day-pill:active{transform:scale(0.93);}
 .day-pill.active{background:var(--g);}
-.dp-n{font-size:13px;font-weight:700;color:var(--t);}
+.dp-n{font-size:11px;font-weight:700;color:var(--t);}
 .day-pill.active .dp-n{color:#fff;}
-.dp-d{font-size:9px;font-weight:500;color:var(--t3);margin-top:2px;}
+.dp-d{font-size:8px;font-weight:500;color:var(--t3);margin-top:1px;}
 .day-pill.active .dp-d{color:rgba(255,255,255,.7);}
 .dp-dot{width:4px;height:4px;border-radius:50%;background:var(--sep);margin:3px auto 0;}
 .day-pill.active .dp-dot{background:rgba(255,255,255,.5);}
@@ -158,9 +158,28 @@ body{background:var(--bg);font-family:-apple-system,'PingFang HK','Heiti TC',san
 /* PAGE SECTIONS */
 .page{display:none;}
 .page.active{display:block;}
+.page.active#page-tips ~ .cover,
+.page.active#page-tips ~ .stats-grid,
+.page.active#page-tips ~ .alt-section,
+.page.active#page-tips ~ .sec-title:first-of-type,
+.page.active#page-tips ~ .day-scroll,
+.page.active#page-tips ~ .map-btn-row,
+.page.active#page-tips ~ .stop-list,
+.page.active#page-tips ~ .hotel-wrap {
+  display: none !important;
+}
 
 /* TIPS */
 .tips{padding:0 16px calc(36px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:9px;margin-top:8px;}
+
+/* Hide content on tips page */
+.page#page-tips .stats-grid,
+.page#page-tips .alt-section,
+.page#page-tips .sec-title:first-of-type,
+.page#page-tips .day-scroll,
+.page#page-tips .map-btn-row {
+  display: none !important;
+}
 .tip-card{background:var(--card);border-radius:16px;padding:14px;}
 .tip-hdr{display:flex;align-items:center;gap:10px;margin-bottom:7px;}
 .tip-ico{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
@@ -198,7 +217,7 @@ body{background:var(--bg);font-family:-apple-system,'PingFang HK','Heiti TC',san
 </div>
 
 <!-- TRIP STATS -->
-<div class="stats-grid">
+<div class="stats-grid" data-page="itinerary">
   <div class="stat-box">
     <div class="stat-n">9</div>
     <div class="stat-l">日數</div>
@@ -222,7 +241,7 @@ body{background:var(--bg);font-family:-apple-system,'PingFang HK','Heiti TC',san
 </div>
 
 <!-- ALTITUDE CHART -->
-<div class="alt-section">
+<div class="alt-section" data-page="itinerary">
   <div class="alt-title">📊 每日海拔概覽</div>
   <div class="alt-bars-wrap" id="altBarsWrap">
     <div class="alt-bars" id="altBars"></div>
@@ -231,15 +250,15 @@ body{background:var(--bg);font-family:-apple-system,'PingFang HK','Heiti TC',san
 
 <div id="page-itinerary" class="page active"><div class="sec-title">行程安排</div>
 <div class="day-scroll" id="dayScroll"></div>
-<div id="dayHeader"></div>
+<div id="dayHeader" ></div>
 <div class="map-btn-row">
   <button class="map-btn" onclick="openSheet()">
     <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
     查看當日地圖景點
   </button>
 </div>
-<div class="stop-list" id="stopList"></div>
-<div id="hotelWrap"></div>
+<div class="stop-list" id="stopList" ></div>
+<div id="hotelWrap" ></div>
 
 </div><!-- end page-itinerary -->
 
@@ -444,22 +463,17 @@ function renderAlt(){
   const wrap = document.getElementById('altBarsWrap');
   const BAR_MAX_PX = 50;
   const max = Math.max(...ALTS);
-  el.innerHTML = ALTS.map((a,i)=>{
+  el.innerHTML = ALTS.map(function(a, i){
     const px = Math.max(4, Math.round((a/max)*BAR_MAX_PX));
     const isActive = i===active;
     const op = isActive ? '1' : '0.28';
     const mc = isActive ? ALT_COLORS[i] : 'var(--t3)';
-    return '<div class="alt-bar-wrap" onclick="switchDayFromAlt(' + i + ')">'
-      + '<div class="alt-bar' + (isActive?' active-bar':'') + '" style="height:' + px + 'px;background:' + ALT_COLORS[i] + ';opacity:' + op + ';"></div>'
-      + '<div class="alt-meter" style="color:' + mc + ';">' + ALTS[i].toLocaleString() + 'm</div>'
-      + '<div class="alt-day-num">第' + (i+1) + '日</div>'
-      + '</div>';
+    const html = '<div class="alt-bar-wrap"><div class="alt-bar' + (isActive?' active-bar':'') + '" style="height:' + px + 'px;background:' + ALT_COLORS[i] + ';opacity:' + op + ';"></div><div class="alt-meter" style="color:' + mc + ';">' + ALTS[i].toLocaleString() + 'm</div><div class="alt-day-num">第' + (i+1) + '日</div></div>';
+    return html;
   }).join('');
-  
-  // Auto-scroll to active day
-  setTimeout(()=>{
+  setTimeout(function(){
     const activeBar = el.querySelector('.alt-bar-wrap:nth-child(' + (active+1) + ')');
-    if(activeBar) {
+    if(activeBar && wrap) {
       const barLeft = activeBar.offsetLeft;
       const wrapWidth = wrap.clientWidth;
       const barWidth = activeBar.clientWidth;
@@ -468,25 +482,6 @@ function renderAlt(){
   }, 100);
 }
 
-// ── Day pills ──
-function renderDays(){
-  const s = document.getElementById('dayScroll');
-  s.innerHTML = '';
-  DAYS.forEach((d,i)=>{
-    const p = document.createElement('div');
-    p.className = 'day-pill'+(i===active?' active':'');
-    p.id = 'day-pill-' + i;
-    if(i===active) p.style.background = d.color;
-    p.innerHTML = '<div class="dp-n">第'+(i+1)+'日</div><div class="dp-d">'+d.date+'</div><div class="dp-dot"></div>';
-    p.onclick = function(){ switchDay(i); };
-    s.appendChild(p);
-  });
-  // Auto-scroll active pill into view
-  var activePill = document.getElementById('day-pill-' + active);
-  if(activePill) {
-    activePill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-  }
-}
 
 function switchDay(i){
   active = i;
@@ -495,7 +490,9 @@ function switchDay(i){
   renderHeader();
   renderStops();
   renderHotel();
-
+  document.getElementById('dayHeader').style.display = 'block';
+  document.getElementById('stopList').style.display = 'block';
+  document.getElementById('hotelWrap').style.display = 'block';
 }
 
 // ── Day header ──
@@ -723,6 +720,25 @@ window.addEventListener('load', function() {
   }
 });
 
+// ── Day pills ──
+function renderDays(){
+  const s = document.getElementById('dayScroll');
+  s.innerHTML = '';
+  DAYS.forEach(function(d,i){
+    const p = document.createElement('div');
+    p.className = 'day-pill'+(i===active?' active':'');
+    p.id = 'day-pill-' + i;
+    if(i===active) p.style.background = d.color;
+    p.innerHTML = '<div class="dp-n">第'+(i+1)+'日</div><div class="dp-d">'+d.date+'</div><div class="dp-dot"></div>';
+    p.onclick = function(){ switchDay(i); };
+    s.appendChild(p);
+  });
+  var activePill = document.getElementById('day-pill-' + active);
+  if(activePill) {
+    activePill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }
+}
+
 makeStars();
 renderAlt();
 renderDays();
@@ -730,20 +746,33 @@ renderHeader();
 renderStops();
 renderHotel();
 
-function switchDayFromAlt(dayIndex) {
-  active = dayIndex;
-  renderDays();
-  renderAlt();
-  renderHeader();
-  renderStops();
-  renderHotel();
-}
-
 function switchPage(page) {
-  document.querySelectorAll('.page').forEach(function(el) { el.classList.remove('active'); });
-  document.querySelectorAll('.nav-tab').forEach(function(el) { el.classList.remove('active'); });
-  document.getElementById('page-' + page).classList.add('active');
-  document.getElementById('nav-' + page).classList.add('active');
+  var itineraryPage = document.getElementById('page-itinerary');
+  var tipsPage = document.getElementById('page-tips');
+  var navItinerary = document.getElementById('nav-itinerary');
+  var navTips = document.getElementById('nav-tips');
+  var statsGrid = document.querySelector('.stats-grid');
+  var altSection = document.querySelector('.alt-section');
+  
+  if(page === 'itinerary') {
+    itineraryPage.style.display = 'block';
+    tipsPage.style.display = 'none';
+    navItinerary.classList.add('active');
+    navTips.classList.remove('active');
+    if(statsGrid) statsGrid.style.display = 'grid';
+    if(altSection) altSection.style.display = 'block';
+    if(active < 0) switchDay(0);
+  } else {
+    itineraryPage.style.display = 'none';
+    tipsPage.style.display = 'block';
+    navItinerary.classList.remove('active');
+    navTips.classList.add('active');
+    if(statsGrid) statsGrid.style.display = 'none';
+    if(altSection) altSection.style.display = 'none';
+    document.querySelectorAll('.day-pill').forEach(function(el) { el.classList.remove('active'); el.style.background = ''; });
+    document.querySelectorAll('.alt-bar').forEach(function(el) { el.classList.remove('active-bar'); el.style.opacity = '0.28'; });
+    active = -1;
+  }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 </script>
