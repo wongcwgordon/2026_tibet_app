@@ -756,6 +756,7 @@ function switchPage(page) {
   var statsGrid = document.querySelector('.stats-grid');
   var altSection = document.querySelector('.alt-section');
   
+  var cover = document.querySelector('.cover');
   if(page === 'itinerary') {
     itineraryPage.style.display = 'block';
     tipsPage.style.display = 'none';
@@ -763,6 +764,7 @@ function switchPage(page) {
     navTips.classList.remove('active');
     if(statsGrid) statsGrid.style.display = 'grid';
     if(altSection) altSection.style.display = 'block';
+    if(cover) cover.style.borderRadius = '0 0 24px 24px';
     if(active < 0) switchDay(0);
   } else {
     itineraryPage.style.display = 'none';
@@ -771,6 +773,7 @@ function switchPage(page) {
     navTips.classList.add('active');
     if(statsGrid) statsGrid.style.display = 'none';
     if(altSection) altSection.style.display = 'none';
+    if(cover) cover.style.borderRadius = '0';
     document.querySelectorAll('.day-pill').forEach(function(el) { el.classList.remove('active'); el.style.background = ''; });
     document.querySelectorAll('.alt-bar').forEach(function(el) { el.classList.remove('active-bar'); el.style.opacity = '0.28'; });
     active = -1;
