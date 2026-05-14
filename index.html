@@ -6,15 +6,15 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="西藏行程">
-<meta name="theme-color" content="#2D6B4F">
+<meta name="theme-color" content="#F2F2F7">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><defs><linearGradient id='bg3' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%232D6B4F;stop-opacity:1'/><stop offset='100%' style='stop-color:%23152E25;stop-opacity:1'/></linearGradient></defs><rect fill='url(%23bg3)' width='180' height='180' rx='40'/><text x='90' y='115' font-size='100' text-anchor='middle' font-family='Apple Color Emoji'>🏔️</text></svg>">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" crossorigin="anonymous"/>
 <title>西藏9天軍訓</title>
 <style>
 :root{--g:#2D6B4F;--gl:#E5F4EC;--bg:#F2F2F7;--card:#fff;--t:#1C1C1E;--t2:#3C3C43;--t3:#8E8E93;--sep:#E5E5EA;}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-body{background:var(--bg);font-family:-apple-system,'PingFang HK','Heiti TC',sans-serif;padding-bottom:calc(60px + env(safe-area-inset-bottom));-webkit-font-smoothing:antialiased;}
+html,body{background:#F2F2F7;height:100%;}body{background:#F2F2F7;font-family:-apple-system,'PingFang HK','Heiti TC',sans-serif;padding-bottom:calc(60px + env(safe-area-inset-bottom));-webkit-font-smoothing:antialiased;}
 
 /* COVER */
 .cover{height:280px;background:linear-gradient(170deg,#0A1628 0%,#152E25 50%,#2D6B4F 100%);position:relative;overflow:hidden;padding-top:env(safe-area-inset-top);}
@@ -30,7 +30,7 @@ body{background:var(--bg);font-family:-apple-system,'PingFang HK','Heiti TC',san
 .offline-badge{position:absolute;top:calc(env(safe-area-inset-top) + 8px);right:14px;background:rgba(45,107,79,.3);border:0.5px solid rgba(45,107,79,.5);border-radius:99px;padding:3px 10px;font-size:10px;color:#7DCFAF;font-weight:600;}
 
 /* STATS GRID */
-.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--sep);}
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--sep);border-radius:16px 16px 0 0;overflow:hidden;}
 .stat-box{background:var(--card);padding:14px 16px;}
 .stat-n{font-size:22px;font-weight:700;color:var(--t);line-height:1;}
 .stat-l{font-size:10px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-top:2px;}
@@ -108,7 +108,7 @@ body{background:var(--bg);font-family:-apple-system,'PingFang HK','Heiti TC',san
 .ico-mountain{background:#EAF3DE;} .ico-mountain svg{stroke:#3B6D11;}
 
 /* HOTEL CARD */
-.hotel-wrap{margin:12px 16px 0;}
+.hotel-wrap{margin:12px 16px 0;padding-bottom:90px;}
 .hotel-label-row{font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;padding:0 2px 6px;}
 .hotel-card{background:var(--card);border-radius:16px;overflow:hidden;}
 .hotel-top{padding:13px 14px;border-bottom:0.5px solid var(--bg);}
@@ -148,7 +148,7 @@ body{background:var(--bg);font-family:-apple-system,'PingFang HK','Heiti TC',san
 .sheet-map-btn:active{background:#0F6E56;}
 
 /* BOTTOM NAV */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:0.5px solid var(--sep);display:flex;padding-top:8px;padding-bottom:calc(8px + env(safe-area-inset-bottom));z-index:800;}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#F2F2F7;border-top:0.5px solid #C6C6C8;display:flex;padding-top:8px;padding-bottom:calc(8px + env(safe-area-inset-bottom));z-index:800;}
 .nav-tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;border:none;background:none;padding:0;}
 .nav-tab svg{width:24px;height:24px;fill:none;stroke:var(--t3);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
 .nav-tab.active svg{stroke:var(--g);}
@@ -157,29 +157,11 @@ body{background:var(--bg);font-family:-apple-system,'PingFang HK','Heiti TC',san
 
 /* PAGE SECTIONS */
 .page{display:none;}
-.page.active{display:block;}
-.page.active#page-tips ~ .cover,
-.page.active#page-tips ~ .stats-grid,
-.page.active#page-tips ~ .alt-section,
-.page.active#page-tips ~ .sec-title:first-of-type,
-.page.active#page-tips ~ .day-scroll,
-.page.active#page-tips ~ .map-btn-row,
-.page.active#page-tips ~ .stop-list,
-.page.active#page-tips ~ .hotel-wrap {
-  display: none !important;
-}
+.page.active{display:block;background:var(--bg);min-height:calc(100vh - 280px);}
+#page-tips{background:var(--bg);}
 
 /* TIPS */
 .tips{padding:0 16px calc(36px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:9px;margin-top:8px;}
-
-/* Hide content on tips page */
-.page#page-tips .stats-grid,
-.page#page-tips .alt-section,
-.page#page-tips .sec-title:first-of-type,
-.page#page-tips .day-scroll,
-.page#page-tips .map-btn-row {
-  display: none !important;
-}
 .tip-card{background:var(--card);border-radius:16px;padding:14px;}
 .tip-hdr{display:flex;align-items:center;gap:10px;margin-bottom:7px;}
 .tip-ico{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
@@ -188,7 +170,7 @@ body{background:var(--bg);font-family:-apple-system,'PingFang HK','Heiti TC',san
 .tip-body{font-size:13px;color:var(--t2);line-height:1.7;}
 </style>
 </head>
-<body>
+<body style="background:#F2F2F7;">
 
 <!-- LOADING OVERLAY -->
 <div id="loading" style="position:fixed;inset:0;background:linear-gradient(180deg,#0A1628 0%,#2D6B4F 100%);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;color:#fff;">
@@ -260,7 +242,7 @@ body{background:var(--bg);font-family:-apple-system,'PingFang HK','Heiti TC',san
 <div class="stop-list" id="stopList" ></div>
 <div id="hotelWrap" ></div>
 
-</div><!-- end page-itinerary -->
+<div style="height:20px;"></div></div><!-- end page-itinerary -->
 
 <div id="page-tips" class="page">
 <div class="sec-title" style="margin-top:6px">旅遊貼士</div>
@@ -308,7 +290,7 @@ body{background:var(--bg);font-family:-apple-system,'PingFang HK','Heiti TC',san
 </div>
 
 <script>
-if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
+// Service worker disabled for local file compatibility
 
 const gmap = q => 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q);
 const CHEVRON = '<polyline points="6 9 12 15 18 9"/>';
@@ -353,7 +335,7 @@ const HOTELS = {
     score:'9.5',scoreLbl:'非常好',scoreCnt:'3,331則評價',
     tags:['布達拉宮景觀','彌散式供氧','全景餐廳','位置理想','適合打卡'],
     rows:[
-      {icon:'pin',t:'宇拓路10號，城關區，拉薩（布達拉宮步行10分鐘）'},
+      {icon:'pin',t:'宇拓路10號，城關區，拉薩（布達拉宮步行10分鐘）',desc:'坐落於布達拉宮與大昭寺之間嘅宇拓路步行街，步行即可到達兩大景點。房間配備彌散式供氧、65吋電視、膠囊咖啡機，頂樓全景餐廳可俯瞰布達拉宮。'},
       {icon:'cal',t:'入住：15:00後 · 退房：12:00前 · 24小時前台'},
       {icon:'food',t:'早餐：自助餐 CNY99/位 · 平日07:30–10:00'},
       {icon:'phone',t:'電話：+86-891-6560888'},
@@ -396,62 +378,71 @@ function rIcon(t){
 }
 
 const DAYS=[
-  {label:'第一日',date:'5月16日',color:'#E05C20',route:'深圳 → 西寧',meals:[],stops:[
+  {label:'第一日',date:'5月16日',color:'#E05C20',route:'深圳 → 西寧',meals:[],desc:'西寧係進藏嘅起點。上午遊覽清真文化，下午參觀博物館，晚上品嚐地道西北美食，然後搭夜臥火車出發前往拉薩。',stops:[
     {type:'transport',icon:'plane_dep',name:'深圳寶安國際機場',map:'深圳宝安国际机场',note:'提早1.5至2小時到達',time:'07:00',lat:22.6395,lng:113.8108},
     {type:'transport',icon:'plane_arr',name:'西寧曹家堡機場',map:'西宁曹家堡国际机场',note:'抵達西寧',time:'11:00',lat:36.5353,lng:102.0430},
-    {type:'transport',icon:'train',name:'西寧站',map:'西宁火车站',note:'放低行李 · LG1廣場',time:'12:29',lat:36.6312,lng:101.7804},
-    {type:'food',icon:'food',name:'下南尖街',map:'下南关街 西宁',note:'午餐掃街',time:'13:15',lat:36.6224,lng:101.7769,desc:'西寧最著名嘅美食街之一，聚集大量清真小食攤檔。必試手撕羊肉麵、羊雜湯、炒砂鍋、烤串等西北特色美食。價錢實惠，本地人同遊客都係度食，係感受西寧飲食文化嘅最佳地點。'},
-    {type:'attraction',icon:'mosque',name:'西寧東關清真寺',map:'西宁东关清真大寺',note:'',time:'14:46',lat:36.6178,lng:101.7868,desc:'東關清真大寺係中國西北地區規模最大嘅清真寺之一，始建於明朝洪武年間，距今已有600多年歷史。寺內可容納萬人禮拜，融合中國傳統建築與伊斯蘭風格，金碧輝煌，係了解回族文化嘅重要場所。'},
-    {type:'attraction',icon:'mosque',name:'南關清真寺',map:'西宁南关清真寺',note:'',time:'15:49',lat:36.6142,lng:101.7771,desc:'南關清真寺係西寧另一座重要嘅清真寺，建築風格獨特，以阿拉伯圓頂式設計為主。寺廟周圍係回族聚居區，可以感受濃厚嘅伊斯蘭文化氛圍，附近有不少清真食品小店。'},
-    {type:'attraction',icon:'bank',name:'青海省博物館',map:'青海省博物馆',note:'',time:'17:03',lat:36.6226,lng:101.7677,desc:'青海省博物館係了解青海歷史文化嘅最佳地點，館內收藏大量珍貴文物，包括史前彩陶、藏族佛教文物、絲綢之路出土文物等。館藏超過47,000件展品，呈現青海從遠古至今嘅歷史發展脈絡，入場免費。'},
-    {type:'food',icon:'food',name:'老字号马相卿烤肉面食館',map:'马相卿特色烤肉面食馆 西宁',note:'晚餐',time:'19:08',lat:36.6198,lng:101.7812,desc:'西寧著名老字號清真餐廳，以烤肉同手工麵食見稱。招牌菜包括烤羊腿、手抓羊肉、牛肉拉麵、羊肉包子等。食材新鮮，用料實在，係當地人推薦嘅地道西寧風味餐廳，出發前記得叫定位。'},
-    {type:'attraction',icon:'cart',name:'鑫鑫超市',map:'鑫鑫超市 西宁',note:'買零食補給',time:'21:26',lat:36.6231,lng:101.7790,desc:'搭夜車前最後補給機會！建議購買以下物品：乾糧零食（餅乾、核桃、棗）、礦泉水（火車上需要多飲水）、即食麵、保暖毛巾。西藏物價較貴，呢度買好啲係比較划算。'},
-    {type:'transport',icon:'train',name:'西寧站（出發）',map:'西宁火车站',note:'搭夜車去拉薩',time:'22:15',lat:36.6312,lng:101.7804},
+    {type:'transport',icon:'train',name:'西寧站',map:'西宁火车站',note:'放低行李 · LG1廣場',time:'12:30',lat:36.6312,lng:101.7804},
+    {type:'food',icon:'food',name:'下南尖街',map:'下南关街 西宁',note:'午餐掃街',time:'13:15',lat:36.6224,lng:101.7769,desc:'西寧最著名嘅美食街之一，聚集大量清真小食攤檔。必試手撕羊肉麵、羊雜湯、炒砂鍋、烤串等西北特色美食。價錢實惠，本地人同遊客都係度食。'},
+    {type:'attraction',icon:'mosque',name:'西寧東關清真寺',map:'西宁东关清真大寺',note:'',time:'14:45',lat:36.6178,lng:101.7868,desc:'東關清真大寺係中國西北地區規模最大嘅清真寺之一，始建於明朝洪武年間，距今已有600多年歷史。寺內可容納萬人禮拜，融合中國傳統建築與伊斯蘭風格。'},
+    {type:'attraction',icon:'mosque',name:'南關清真寺',map:'西宁南关清真寺',note:'',time:'15:45',lat:36.6142,lng:101.7771,desc:'南關清真寺係西寧另一座重要嘅清真寺，建築風格獨特，以阿拉伯圓頂式設計為主。寺廟周圍係回族聚居區，可以感受濃厚嘅伊斯蘭文化氛圍。'},
+    {type:'attraction',icon:'bank',name:'青海省博物館',map:'青海省博物馆',note:'',time:'17:00',lat:36.6226,lng:101.7677,desc:'青海省博物館係了解青海歷史文化嘅最佳地點，館內收藏大量珍貴文物，包括史前彩陶、藏族佛教文物、絲綢之路出土文物等。'},
+    {type:'attraction',icon:'bridge',name:'中山橋夜景',map:'中山桥 西宁',note:'西寧地標，黃河夜景',time:'17:15',lat:36.6180,lng:101.7700,desc:'中山橋係西寧著名地標，跨越黃河，夜景優美。橋上可俯瞰黃河夜景，係晚上散步嘅好地方。'},
+    {type:'food',icon:'food',name:'老字号马相卿烤肉面食館',map:'马相卿特色烤肉面食馆 西宁',note:'晚餐',time:'19:15',lat:36.6198,lng:101.7812,desc:'西寧著名老字號清真餐廳，以烤肉同手工麵食見稱。招牌菜包括烤羊腿、手抓羊肉、牛肉拉麵、羊肉包子等。'},
+    {type:'shopping',icon:'cart',name:'沃爾瑪超市（西寧站店）',map:'沃尔玛购物广场 西宁火车站',note:'購買高原補給物資',time:'20:30',lat:36.6289,lng:101.7851,desc:'搭夜車前最後補給機會。建議購買乾糧零食、礦泉水、即食麵、保暖毛巾等。西藏物價較貴，呢度買好啲係比較划算。'},
+    {type:'transport',icon:'train',name:'西寧站（出發）',map:'西宁火车站',note:'搭夜車去拉薩',time:'22:15',lat:36.6312,lng:101.7804,desc:'西寧火車站嘅夜晚，旅客熙來攘往。搭上夜臥火車，踏上青藏鐵路之旅，沿途海拔逐漸上升，清晨抵達拉薩。記得早點上車佔個好位置。'},
   ]},
-  {label:'第二日',date:'5月17日',color:'#7C3AED',route:'西寧 → 拉薩（海拔3,650米）',meals:[],stops:[
-    {type:'transport',icon:'train',name:'拉薩站',map:'拉萨火车站',note:'抵達拉薩',time:'21:30',lat:29.6486,lng:91.1172},
-    {type:'hotel',icon:'bed',name:'拉薩布達拉宮逸扉酒店',map:'拉萨布达拉宫逸扉酒店',note:'宇拓路10號 · 評分9.5分 · 含彌散式供氧',time:'22:26',lat:29.6525,lng:91.1374},
+  {label:'第二日',date:'5月17日',color:'#7C3AED',route:'西寧 → 拉薩（海拔3,650米）',meals:[],desc:'夜臥火車沿青藏鐵路攀升，海拔由2,275m爬升至3,650m。沿途可見高原風光，晚上抵達拉薩，好好休息適應高原。',stops:[
+    {type:'transport',icon:'train',name:'拉薩站',map:'拉萨火车站',note:'抵達拉薩',time:'21:30',lat:29.6486,lng:91.1172,desc:'青藏鐵路終點站，海拔3,650米。火車站設計融合藏式建築風格，出站後可感受到拉薩嘅清新高原空氣。'},
+    {type:'hotel',icon:'bed',name:'拉薩布達拉宮逸扉酒店',map:'拉萨布达拉宫逸扉酒店',note:'宇拓路10號 · 評分9.5分 · 含彌散式供氧',time:'22:26',lat:29.6525,lng:91.1374,desc:'坐落於布達拉宮與大昭寺之間嘅宇拓路步行街，步行即可到達兩大景點。房間配備彌散式供氧、65吋電視、膠囊咖啡機，頂樓全景餐廳可俯瞰布達拉宮，早餐提供藏式美食。'}
   ]},
-  {label:'第三日',date:'5月18日',color:'#0284C7',route:'拉薩 → 雅江河谷 → 羊卓雍措 → 乃欽康桑雪山 → 滿拉水庫 → 日喀則',meals:['早（自理）','午餐50元','晚餐50元'],stops:[
-    {type:'group',icon:'users',name:'拉薩上門接送出發',map:'拉萨布达拉宫逸扉酒店',note:'跟團第一日',time:'08:00',lat:29.6525,lng:91.1374},
-    {type:'attraction',icon:'lake',name:'雅江河谷',map:'雅鲁藏布江河谷 西藏',note:'雅魯藏布江河谷風光',time:'',lat:29.2836,lng:90.0134,desc:'世界上海拔最高嘅大河，流經西藏南部。河谷兩岸青山翠嶺，風光壯麗，沿途可見雪山倒影。'},
-    {type:'mountain',icon:'lake',name:'羊卓雍措',map:'羊卓雍措 西藏',note:'西藏三大聖湖 · 海拔4,441米',time:'',lat:28.9762,lng:90.6453,desc:'西藏三大聖湖之一，湖水呈神秘嘅天藍色，藏族人視之為「天鵝之湖」，四周雪山環繞。'},
-    {type:'mountain',icon:'snow',name:'乃欽康桑雪山冰川旅遊區',map:'乃钦康桑雪山 西藏',note:'可體驗卡丁車 / 5-12月劃船（贈送）',time:'',lat:28.9200,lng:90.2300,desc:'海拔7,191米，可近距離欣賞冰川地貌，5月至12月可體驗划船穿越冰湖，景色震撼。'},
-    {type:'attraction',icon:'lake',name:'滿拉水庫',map:'满拉水库 西藏',note:'',time:'',lat:28.8558,lng:89.4025,desc:'西藏最大嘅人工水庫，水面平靜如鏡，四周群山環抱，係前往日喀則途中的景點。'},
+  {label:'第三日',date:'5月18日',color:'#0284C7',route:'拉薩 → 雅江河谷 → 羊卓雍措 → 乃欽康桑雪山 → 滿拉水庫 → 日喀則',meals:['早（自理）','午餐50元','晚餐50元'],desc:'跟團第一日，體驗西藏南部奇景。羊卓雍措湛藍湖水、乃欽康桑雪山冰川，係全程最治癒嘅一日。',stops:[
+    {type:'group',icon:'users',name:'拉薩上門接送出發',map:'拉萨布达拉宫逸扉酒店',note:'跟團第一日',time:'08:00',lat:29.6525,lng:91.1374,desc:'跟團第一日，導遊上門接送，準時等候。記得帶齊証件、藥物、防曬用品。'},
+    {type:'attraction',icon:'lake',name:'雅江河谷',map:'雅鲁藏布江河谷 西藏',note:'雅魯藏布江河谷風光',time:'',lat:29.2836,lng:90.0134,desc:'雅魯藏布江係世界上海拔最高嘅大河，流經西藏南部。河谷兩岸青山翠嶺，風光壯麗，沿途可見雪山倒影映入江中。'},
+    {type:'mountain',icon:'lake',name:'羊卓雍措',map:'羊卓雍措 西藏',note:'西藏三大聖湖 · 海拔4,441米',time:'',lat:28.9762,lng:90.6453,desc:'西藏三大聖湖之一，海拔4,441米，湖水呈神秘嘅天藍色。藏族人視之為「天鵝之湖」，四周雪山環繞，係西藏最美嘅湖泊景觀之一。'},
+    {type:'mountain',icon:'snow',name:'乃欽康桑雪山冰川旅遊區',map:'乃钦康桑雪山 西藏',note:'可體驗卡丁車 / 5-12月劃船（贈送）',time:'',lat:28.9200,lng:90.2300,desc:'可近距離欣賞冰川地貌，5月至12月可體驗划船穿越冰湖，亦可玩卡丁車。景色震撼，係難得嘅高原冰川體驗。'},
+    {type:'attraction',icon:'lake',name:'滿拉水庫',map:'满拉水库 西藏',note:'',time:'',lat:28.8558,lng:89.4025,desc:'西藏最大嘅人工水庫，水面平靜如鏡，四周群山環抱，係前往日喀則途中嘅休息景點。'}
   ]},
-  {label:'第四日',date:'5月19日',color:'#0F6E56',route:'日喀則 → 辦邊防證 → 嘉措拉山口 → 加烏拉山口 → 珠峰大本營 → 扎西宗鄉',meals:['早（酒店含早）','午餐50元','晚餐50元'],stops:[
-    {type:'group',icon:'doc',name:'辦理邊境防衛證',map:'日喀则边境管理大队',note:'去珠峰必須辦理',time:'早上',lat:29.2674,lng:88.8800},
-    {type:'attraction',icon:'flag',name:'5000公里紀念廣場',map:'5000公里纪念广场 日喀则',note:'',time:'',lat:29.1200,lng:88.5700,desc:'距離北京5,000公里嘅里程碑，係前往珠峰路途上一個特別嘅打卡地標。'},
-    {type:'mountain',icon:'mountain',name:'嘉措拉山口',map:'加错拉山口 西藏',note:'',time:'',lat:28.8960,lng:88.0480,desc:'海拔5,248米，晴天可清晰眺望珠峰、洛子峰等多座8,000米以上巨峰。'},
-    {type:'mountain',icon:'mountain',name:'加烏拉山口',map:'加乌拉山口 珠峰',note:'珠峰遠眺觀景點',time:'',lat:28.2700,lng:87.0800,desc:'海拔5,216米，天氣好時可同時睇到珠峰等五座8,000米以上嘅巨峰，氣勢磅礴。'},
-    {type:'mountain',icon:'mountain',name:'珠峰大本營 EBC',map:'珠穆朗玛峰大本营',note:'海拔5,200米 · 世界最高峰腳下',time:'下午',lat:28.1300,lng:86.8480,desc:'全球登山者嘅夢想之地，可近距離仰望珠峰8,848米雄姿。高原空氣稀薄，行動宜緩慢，多做深呼吸。'},
+  {label:'第四日',date:'5月19日',color:'#0F6E56',route:'日喀則 → 辦邊防證 → 嘉措拉山口 → 加烏拉山口 → 珠峰大本營 → 扎西宗鄉',meals:['早（酒店含早）','午餐50元','晚餐50元'],desc:'全程最高海拔日，挑戰珠峰大本營5,200m。親眼目睹珠峰8,848m嘅雄姿，係一生難得嘅體驗。記得放慢步伐，多做深呼吸。',stops:[
+    {type:'group',icon:'doc',name:'辦理邊境防衛證',map:'日喀则边境管理大队',note:'去珠峰必須辦理',time:'早上',lat:29.2674,lng:88.8800,desc:'去珠峰必須辦理嘅証件，行程安排喺日喀則辦理。辦理時間約需1-2小時，記得帶齊護照同身份証。'},
+    {type:'attraction',icon:'flag',name:'5000公里紀念廣場',map:'5000公里纪念广场 日喀则',note:'',time:'',lat:29.1200,lng:88.5700,desc:'距離北京5,000公里嘅里程碑，係前往珠峰路途上嘅打卡地標，標誌著你距離世界最高峰已經唔遠。'},
+    {type:'mountain',icon:'mountain',name:'嘉措拉山口',map:'加错拉山口 西藏',note:'',time:'',lat:28.8960,lng:88.0480,desc:'海拔5,248米，係前往珠峰必經之路。晴天可清晰眺望珠峰、洛子峰等多座8,000米以上巨峰，景色壯觀。'},
+    {type:'mountain',icon:'mountain',name:'加烏拉山口',map:'加乌拉山口 珠峰',note:'珠峰遠眺觀景點',time:'',lat:28.2700,lng:87.0800,desc:'海拔5,216米，天氣好時可同時睇到珠峰等五座8,000米以上嘅巨峰。係欣賞珠峰全景最佳位置之一，氣勢磅礴。'},
+    {type:'mountain',icon:'mountain',name:'珠峰大本營 EBC',map:'珠穆朗玛峰大本营',note:'海拔5,200米 · 世界最高峰腳下',time:'下午',lat:28.1300,lng:86.8480,desc:'全球登山者嘅夢想之地，海拔5,200米，可近距離仰望珠峰8,848米雄姿。高原空氣稀薄，行動宜緩慢，多做深呼吸。係一生必到嘅地方。'}
   ]},
-  {label:'第五日',date:'5月20日',color:'#0F6E56',route:'扎西宗鄉 → 珠峰東坡 → 十萬沙丘 → 阿瑪直米雪山 → G219 → 日喀則',meals:['早（酒店含早）','午餐50元','晚餐50元'],stops:[
-    {type:'mountain',icon:'mountain',name:'珠峰東坡',map:'珠峰东坡 西藏',note:'另一角度睇珠峰',time:'早上',lat:28.1450,lng:87.0200,desc:'與大本營截然不同嘅觀賞角度，晨光照射雪峰時特別震撼，係攝影愛好者嘅天堂。'},
-    {type:'attraction',icon:'wind',name:'十萬沙丘',map:'十万沙丘 西藏',note:'高原沙漠奇觀',time:'',lat:28.6500,lng:87.8500,desc:'青藏高原上罕見嘅沙漠地貌，金色沙丘與周邊雪山形成強烈對比，係西藏獨一無二嘅自然奇景。'},
-    {type:'mountain',icon:'snow',name:'阿瑪直米雪山',map:'阿玛直米雪山 西藏',note:'',time:'',lat:28.9800,lng:88.0100,desc:'藏區著名嘅神山，藏族人視之為聖山，雪山冰峰在陽光下閃閃發光。'},
-    {type:'transport',icon:'road',name:'G219國道',map:'G219国道 西藏',note:'沿途風光',time:'',lat:29.0500,lng:88.3000,desc:'中國最長最高嘅公路之一，沿途可見藏羚羊、氂牛等野生動物，係自駕愛好者心目中嘅聖地。'},
+  {label:'第五日',date:'5月20日',color:'#0F6E56',route:'扎西宗鄉 → 珠峰東坡 → 十萬沙丘 → 阿瑪直米雪山 → G219 → 日喀則',meals:['早（酒店含早）','午餐50元','晚餐50元'],desc:'從另一角度欣賞珠峰東坡，再到十萬沙丘感受高原罕見沙漠景觀。金色沙丘配白雪雪山，對比強烈，攝影天堂。',stops:[
+    {type:'mountain',icon:'mountain',name:'珠峰東坡',map:'珠峰东坡 西藏',note:'另一角度睇珠峰',time:'早上',lat:28.1450,lng:87.0200,desc:'與大本營截然不同嘅觀賞角度，晨光照射雪峰時特別震撼。係攝影愛好者嘅天堂，日出時分景色尤為美麗。'},
+    {type:'attraction',icon:'wind',name:'十萬沙丘',map:'十万沙丘 西藏',note:'高原沙漠奇觀',time:'',lat:28.6500,lng:87.8500,desc:'青藏高原上罕見嘅沙漠地貌，金色沙丘與周邊雪山形成強烈對比。係西藏獨一無二嘅自然奇景，非常適合攝影留念。'},
+    {type:'mountain',icon:'snow',name:'阿瑪直米雪山',map:'阿玛直米雪山 西藏',note:'',time:'',lat:28.9800,lng:88.0100,desc:'藏區著名神山，藏族人視之為聖山，常年積雪。雪山冰峰在陽光下閃閃發光，氣勢雄偉。'},
+    {type:'transport',icon:'road',name:'G219國道',map:'G219国道 西藏',note:'沿途風光',time:'',lat:29.0500,lng:88.3000,desc:'中國最長最高嘅公路之一，沿途景色壯麗，可見藏羚羊、氂牛等野生動物，係自駕愛好者心目中嘅聖地。'}
   ]},
-  {label:'第六日',date:'5月21日',color:'#854F0B',route:'日喀則 → 南木林野溫泉 → 藏北草原 → 杰崗日雪山 → 色林措 → 班戈',meals:['早（酒店含早）','午餐50元','晚餐50元'],stops:[
-    {type:'attraction',icon:'hotspring',name:'南木林野溫泉',map:'南木林野温泉 西藏',note:'高原溫泉體驗',time:'早上',lat:29.6800,lng:89.0900,desc:'天然高原溫泉，泉水富含礦物質，在高海拔地區浸泡溫泉係難得體驗。'},
-    {type:'attraction',icon:'plant',name:'藏北草原',map:'藏北草原 那曲',note:'廣闊草原風光',time:'',lat:31.4800,lng:88.9000,desc:'世界上海拔最高嘅草原之一，廣闊無垠，氂牛、藏羚羊成群漫步，展現純樸嘅遊牧文化。'},
-    {type:'mountain',icon:'snow',name:'杰崗日雪山',map:'杰岗日雪山 西藏',note:'',time:'',lat:31.3500,lng:89.5000,desc:'藏北地區著名嘅高峰，常年積雪，氣勢雄偉。山腳下嘅高原草甸與雪山相映成趣。'},
-    {type:'mountain',icon:'lake',name:'色林措',map:'色林错 西藏',note:'西藏最大湖',time:'',lat:31.7900,lng:88.9600,desc:'西藏最大嘅湖泊，面積約2,391平方公里，湖水呈深藍色，湖畔係黑頸鶴嘅重要棲息地。'},
+  {label:'第六日',date:'5月21日',color:'#854F0B',route:'日喀則 → 南木林野溫泉 → 藏北草原 → 杰崗日雪山 → 色林措 → 班戈',meals:['早（酒店含早）','午餐50元','晚餐50元'],desc:'前往藏北高原，體驗天然野溫泉，漫步廣闊草原，欣賞西藏最大湖泊色林措。景色壯闊，心曠神怡。',stops:[
+    {type:'attraction',icon:'hotspring',name:'南木林野溫泉',map:'南木林野温泉 西藏',note:'高原溫泉體驗',time:'早上',lat:29.6800,lng:89.0900,desc:'天然高原溫泉，泉水富含礦物質，水溫適中。在高海拔地區浸泡溫泉係難得體驗，可舒緩多日行程疲勞。'},
+    {type:'attraction',icon:'plant',name:'藏北草原',map:'藏北草原 那曲',note:'廣闊草原風光',time:'',lat:31.4800,lng:88.9000,desc:'世界上海拔最高嘅草原之一，廣闊無垠。氂牛、藏羚羊成群漫步，展現純樸嘅遊牧文化，景色令人心曠神怡。'},
+    {type:'mountain',icon:'snow',name:'杰崗日雪山',map:'杰岗日雪山 西藏',note:'',time:'',lat:31.3500,lng:89.5000,desc:'藏北地區著名嘅高峰，常年積雪，氣勢雄偉。山腳下嘅高原草甸與雪山相映成趣，構成絕美風景。'},
+    {type:'mountain',icon:'lake',name:'色林措',map:'色林错 西藏',note:'西藏最大湖',time:'',lat:31.7900,lng:88.9600,desc:'西藏最大嘅湖泊，面積約2,391平方公里，湖水呈深藍色。湖畔係黑頸鶴嘅重要棲息地，係觀鳥勝地。'}
   ]},
-  {label:'第七日',date:'5月22日',color:'#854F0B',route:'班戈 → 巴木措 → 納木措（扎西半島）→ 那根拉山口 → 拉薩',meals:['早（酒店含早）','午餐50元'],stops:[
-    {type:'mountain',icon:'lake',name:'巴木措',map:'巴木错 西藏',note:'',time:'早上',lat:31.2700,lng:90.5800,desc:'藏北高原上一個寧靜嘅高原湖泊，湖水湛藍，相比色林措更加幽靜，遊客較少。'},
-    {type:'mountain',icon:'lake',name:'納木措 · 扎西半島南岸',map:'纳木错扎西半岛 西藏',note:'西藏三大聖湖 · 海拔4,718米',time:'',lat:30.7500,lng:90.5200,desc:'世界上海拔最高嘅鹹水湖，湖水呈現神秘嘅寶藍色，扎西半島深入湖中，藏族人稱之為「天湖」。'},
-    {type:'mountain',icon:'mountain',name:'那根拉山口',map:'那根拉山口 纳木错',note:'觀景台',time:'',lat:30.5000,lng:90.5700,desc:'海拔5,190米，係俯瞰納木措全景嘅最佳位置，整個納木措及念青唐古拉雪山盡收眼底。'},
-    {type:'transport',icon:'car',name:'返回拉薩',map:'拉萨 西藏',note:'跟團行程結束，送返酒店',time:'晚上',lat:29.6525,lng:91.1374},
+  {label:'第七日',date:'5月22日',color:'#854F0B',route:'班戈 → 巴木措 → 納木措（扎西半島）→ 那根拉山口 → 拉薩',meals:['早（酒店含早）','午餐50元'],desc:'巴木措、納木措兩個聖湖連環睇。納木措海拔4,718m，湖水呈神秘寶藍色，扎西半島係全程最美打卡位之一。',stops:[
+    {type:'mountain',icon:'lake',name:'巴木措',map:'巴木错 西藏',note:'',time:'早上',lat:31.2700,lng:90.5800,desc:'藏北高原上一個寧靜嘅高原湖泊，湖水湛藍清澈。相比色林措更加幽靜，遊客較少，可盡情感受高原湖泊嘅寧靜美麗。'},
+    {type:'mountain',icon:'lake',name:'納木措 · 扎西半島南岸',map:'纳木错扎西半岛 西藏',note:'西藏三大聖湖 · 海拔4,718米',time:'',lat:30.7500,lng:90.5200,desc:'世界上海拔最高嘅鹹水湖，海拔4,718米，湖水呈神秘寶藍色。扎西半島深入湖中，藏族人稱之為「天湖」，係西藏最神聖嘅地方之一。'},
+    {type:'mountain',icon:'mountain',name:'那根拉山口',map:'那根拉山口 纳木错',note:'觀景台',time:'',lat:30.5000,lng:90.5700,desc:'海拔5,190米，係俯瞰納木措全景嘅最佳位置。整個納木措及念青唐古拉雪山盡收眼底，景色震撼，係全程最佳觀景台之一。'},
+    {type:'transport',icon:'car',name:'返回拉薩',map:'拉萨 西藏',note:'跟團行程結束，送返酒店',time:'晚上',lat:29.6525,lng:91.1374,desc:'跟團行程圓滿結束，導遊送返拉薩酒店。回顧過去數日嘅精彩旅程，好好休息，準備第八日嘅自由遊覽。'}
   ]},
-  {label:'第八日',date:'5月23日',color:'#0F6E56',route:'拉薩市區自由遊覽',meals:[],stops:[
-    {type:'attraction',icon:'castle',name:'布達拉宮',map:'布达拉宫 拉萨',note:'熱門度98% · 提前預約',time:'10:00',lat:29.6577,lng:91.1175,desc:'世界上海拔最高嘅宮殿，建於海拔3,700米嘅紅山之上，共13層，內藏珍貴佛教文物。必須提前網上預約。'},
-    {type:'attraction',icon:'temple',name:'大昭寺',map:'大昭寺 拉萨',note:'八廓街附近 · 朝聖勝地',time:'14:05',lat:29.6529,lng:91.1358,desc:'西藏最神聖嘅寺廟之一，供奉釋迦牟尼佛12歲等身像。寺外八廓街係著名嘅朝聖轉經道。'},
+  {label:'第八日',date:'5月23日',color:'#0F6E56',route:'拉薩市區自由遊覽',meals:[],desc:'自由遊覽拉薩市區。布達拉宮、大昭寺、八角街，感受藏族文化同宗教氛圍，係整個旅程嘅文化精華。',stops:[
+    {type:'food',icon:'food',name:'酒店早餐',map:'拉萨布达拉宫逸扉酒店',note:'藏式早茶 + 糌粑粥',time:'07:30',lat:29.6525,lng:91.1374,desc:'逸扉酒店頂樓全景餐廳嘅藏式早餐，可一邊享用酥油茶、糌粑粥，一邊欣賞布達拉宮晨曦景色。'},
+    {type:'attraction',icon:'castle',name:'布達拉宮',map:'布达拉宫 拉萨',note:'提前網上預約 · 一號線參觀約1h45m',time:'11:00',lat:29.6577,lng:91.1175,desc:'世界上海拔最高嘅宮殿，建於海拔3,700米嘅紅山之上，共13層，高117米。內藏珍貴佛教文物及歷代達賴喇嘛靈塔。必須提前網上預約，限時參觀。'},
+    {type:'food',icon:'food',name:'八角街午餐',map:'八廓街 拉萨',note:'藏式牛肉麵',time:'13:00',lat:29.6529,lng:91.1365,desc:'八角街周邊有大量地道藏式餐廳，推薦試試藏式牛肉麵、氂牛肉餃子（Momo）。價錢實惠，環境熱鬧。'},
+    {type:'attraction',icon:'temple',name:'大昭寺',map:'大昭寺 拉萨',note:'朝聖勝地',time:'14:15',lat:29.6529,lng:91.1358,desc:'西藏最神聖嘅寺廟之一，供奉釋迦牟尼佛12歲等身像。寺外八廓街係著名嘅朝聖轉經道，每日有大批藏族信眾磕長頭朝拜。'},
+    {type:'attraction',icon:'cart',name:'八角街',map:'八廓街 拉萨',note:'逛街購物',time:'15:45',lat:29.6532,lng:91.1350,desc:'拉薩最著名嘅商業步行街，環繞大昭寺一圈。售賣藏式手工藝品、唐卡、佛珠、藏藥等。係購買手信嘅最佳地點，記得討價還價。'},
+    {type:'food',icon:'food',name:'光明甜茶館',map:'光明港琼甜茶馆 拉萨',note:'藏式甜茶體驗',time:'16:15',lat:29.6524,lng:91.1342,desc:'拉薩最著名嘅老字號甜茶館，已有數十年歷史。甜茶係藏族人日常飲品，用紅茶加牛奶熬製而成，香甜可口。坐在茶館感受地道藏族生活氣息。'},
+    {type:'attraction',icon:'mountain',name:'藥王山日落',map:'药王山观景台 拉萨',note:'布達拉宮全景日落',time:'17:15',lat:29.6566,lng:91.1128,desc:'藥王山觀景台係拍攝布達拉宮最佳位置，尤其係日落時分，金色陽光照射宮殿，美不勝收。係全程最佳打卡位之一，記得早啲去佔位。'},
+    {type:'food',icon:'food',name:'晚餐',map:'拉萨 川菜 火锅',note:'川菜 / 藏式火鍋',time:'18:45',lat:29.6525,lng:91.1374,desc:'最後一晚喺拉薩，可以試試川菜或藏式火鍋。拉薩有不少四川移民開嘅川菜館，麻辣鮮香，亦可選擇氂牛肉火鍋，係高原特色體驗。'},
+    {type:'attraction',icon:'flag',name:'拉薩夜市',map:'北京东路夜市 拉萨',note:'北京東路夜市',time:'20:00',lat:29.6541,lng:91.1445,desc:'拉薩嘅夜市主要集中喺北京東路一帶，有各種小食攤檔、紀念品攤位。夜晚嘅拉薩氣溫較低，記得加件外套。'},
+    {type:'hotel',icon:'bed',name:'機場酒店',map:'拉萨贡嘎机场酒店',note:'休息 · 明日早機',time:'21:00',lat:29.3000,lng:90.9200,desc:'因為明日早機，今晚移往機場附近酒店（距離市區約50-60分鐘車程）。早點休息，明日準時出發。'}
   ]},
-  {label:'第九日',date:'5月24日',color:'#BE185D',route:'拉薩 → 昆明 → 香港',meals:[],stops:[
-    {type:'transport',icon:'plane_dep',name:'拉薩貢嘎國際機場',map:'拉萨贡嘎国际机场',note:'出發返程',time:'10:30',lat:29.2978,lng:90.9119},
-    {type:'transport',icon:'plane',name:'昆明長水國際機場',map:'昆明长水国际机场',note:'要拎行李重新辦理登機手續',time:'15:20',lat:25.1019,lng:102.9290},
-    {type:'transport',icon:'plane_arr',name:'香港國際機場',map:'Hong Kong International Airport',note:'返到香港喇！',time:'20:15',lat:22.3080,lng:113.9185},
+  {label:'第九日',date:'5月24日',color:'#BE185D',route:'拉薩 → 昆明 → 香港',meals:[],desc:'依依不捨離開西藏，飛返香港。帶著高原嘅回憶同對西藏嘅眷戀，完成呢次難忘嘅軍訓之旅！',stops:[
+    {type:'transport',icon:'plane_dep',name:'拉薩貢嘎國際機場',map:'拉萨贡嘎国际机场',note:'出發返程',time:'10:30',lat:29.2978,lng:90.9119,desc:'拉薩嘅主要國際機場，距離市區約60公里。建議提早2小時到達辦理登機手續。告別西藏，帶著滿滿回憶踏上歸途。'},
+    {type:'transport',icon:'plane',name:'昆明長水國際機場',map:'昆明长水国际机场',note:'要拎行李重新辦理登機手續',time:'15:20',lat:25.1019,lng:102.9290,desc:'中轉昆明時需拎行李重新辦理登機手續。昆明係「春城」，氣候宜人，若有時間可在機場附近感受一下雲南風情。'},
+    {type:'transport',icon:'plane_arr',name:'香港國際機場',map:'Hong Kong International Airport',note:'返到香港喇！',time:'20:15',lat:22.3080,lng:113.9185,desc:'返到香港喇！結束呢次9日西藏軍訓之旅，希望大家都帶著滿滿嘅回憶同對西藏嘅眷戀安全回家。'},
   ]},
 ];
 
@@ -500,6 +491,7 @@ function renderHeader(){
   const d = DAYS[active];
   const m = d.meals.length ? `<div class="meals">${d.meals.map(x=>`<span class="meal-tag">🍽 ${x}</span>`).join('')}</div>` : '';
   const alt = ALTS[active].toLocaleString();
+  const desc = d.desc ? `<div style="font-size:13px;color:var(--t2);line-height:1.6;margin-top:8px;">${d.desc}</div>` : '';
   document.getElementById('dayHeader').innerHTML = `
     <div class="day-hdr">
       <div class="day-hdr-top">
@@ -509,6 +501,7 @@ function renderHeader(){
       </div>
       <div class="day-route-t">${d.route}</div>
       ${m}
+      ${desc}
     </div>`;
 }
 
@@ -711,14 +704,18 @@ function makeStars(){
 }
 
 // Hide loading when page is ready
-window.addEventListener('load', function() {
+// Hide loading - multiple fallbacks
+function hideLoading() {
   var loading = document.getElementById('loading');
   if (loading) {
     loading.style.transition = 'opacity 0.5s';
     loading.style.opacity = '0';
     setTimeout(function() { loading.style.display = 'none'; }, 500);
   }
-});
+}
+window.addEventListener('load', hideLoading);
+// Force hide after 3s no matter what
+setTimeout(hideLoading, 3000);
 
 // ── Day pills ──
 function renderDays(){
@@ -739,12 +736,17 @@ function renderDays(){
   }
 }
 
-makeStars();
-renderAlt();
-renderDays();
-renderHeader();
-renderStops();
-renderHotel();
+try {
+  makeStars();
+  renderAlt();
+  renderDays();
+  renderHeader();
+  renderStops();
+  renderHotel();
+} catch(e) {
+  console.error('Init error:', e.message, e.stack);
+  hideLoading();
+}
 
 function switchPage(page) {
   var itineraryPage = document.getElementById('page-itinerary');
@@ -776,7 +778,7 @@ function switchPage(page) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" crossorigin="anonymous" onerror="console.warn('Leaflet CDN failed, map unavailable')"></script>
 
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav">
