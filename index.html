@@ -17,11 +17,11 @@
 html,body{background:#F2F2F7;height:100%;}body{background:#F2F2F7;font-family:-apple-system,'PingFang HK','Heiti TC',sans-serif;padding-bottom:calc(60px + env(safe-area-inset-bottom));-webkit-font-smoothing:antialiased;}
 
 /* COVER */
-.cover{height:280px;background:linear-gradient(170deg,#0A1628 0%,#152E25 50%,#2D6B4F 100%);position:relative;overflow:hidden;padding-top:env(safe-area-inset-top);}
+.cover{height:340px;background:linear-gradient(170deg,#0A1628 0%,#152E25 50%,#2D6B4F 100%);position:relative;overflow:hidden;padding-top:env(safe-area-inset-top);}
 .stars{position:absolute;inset:0;pointer-events:none;}
 .star{position:absolute;background:#fff;border-radius:50%;}
 .cover-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,22,40,.05),rgba(10,22,40,.8));}
-.cover-content{position:absolute;bottom:0;left:0;right:0;padding:16px 20px 24px;}
+.cover-content{position:absolute;bottom:0;left:0;right:0;padding:16px 20px 90px;}
 .trip-tag{font-size:11px;font-weight:600;color:rgba(255,255,255,.5);margin-bottom:5px;letter-spacing:.06em;text-transform:uppercase;}
 .trip-name{font-size:32px;font-weight:700;color:#fff;line-height:1.15;margin-bottom:6px;}
 .trip-date{font-size:13px;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:5px;}
@@ -30,7 +30,7 @@ html,body{background:#F2F2F7;height:100%;}body{background:#F2F2F7;font-family:-a
 .offline-badge{position:absolute;top:calc(env(safe-area-inset-top) + 8px);right:14px;background:rgba(45,107,79,.3);border:0.5px solid rgba(45,107,79,.5);border-radius:99px;padding:3px 10px;font-size:10px;color:#7DCFAF;font-weight:600;}
 
 /* STATS GRID */
-.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--sep);overflow:hidden;border-radius:20px 20px 0 0;margin-top:-8px;position:relative;z-index:1;}
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--sep);overflow:hidden;border-radius:20px 20px 0 0;margin-top:-32px;position:relative;z-index:1;}
 .stat-box{background:var(--card);padding:14px 16px;}
 .stat-n{font-size:22px;font-weight:700;color:var(--t);line-height:1;}
 .stat-l{font-size:10px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-top:2px;}
@@ -158,7 +158,7 @@ html,body{background:#F2F2F7;height:100%;}body{background:#F2F2F7;font-family:-a
 /* PAGE SECTIONS */
 .page{display:none;}
 .page.active{display:block;background:var(--bg);min-height:calc(100vh - 280px);}
-#page-tips{background:var(--bg);border-radius:20px 20px 0 0;margin-top:-8px;position:relative;z-index:1;}
+#page-tips{background:var(--bg);border-radius:20px 20px 0 0;margin-top:-32px;position:relative;z-index:1;}
 
 /* TIPS */
 .tips{padding:0 16px calc(90px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px;margin-top:0;}
